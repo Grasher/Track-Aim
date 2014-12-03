@@ -1,3 +1,0 @@
-INDEX VERSION 1.126+C:\Users\Hono Taki\ISEP\1ºsemestre\SIMOV\Trabalho\Track-Aim\.metadata\.plugins\org.eclipse.jdt.core
-2391798200.index
-3515282563.index
