@@ -6,14 +6,14 @@ import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 
 public class MainActivity extends Activity implements OnClickListener,
@@ -42,47 +42,47 @@ public class MainActivity extends Activity implements OnClickListener,
 	 */
 	private ConnectionResult mConnectionResult;
 
+	private SignInButton btnSignIn;
+	private Button btnSignOut;
+	private Button btnPlay;
+	private Button btnFriends;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		findViewById(R.id.sign_in_button).setOnClickListener(this);
-
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 				.addConnectionCallbacks(this)
 				.addOnConnectionFailedListener(this).addApi(Plus.API)
 				.addScope(Plus.SCOPE_PLUS_LOGIN).build();
-		getString(com.google.android.gms.R.string.common_signin_button_text_long);
-		findViewById(R.id.sign_out_button).setOnClickListener(new OnClickListener() {
-			
+
+		buttonBehavior();
+
+	}
+
+	private void buttonBehavior() {
+		btnSignIn = (SignInButton) findViewById(R.id.sign_in_button);
+		btnSignIn.setOnClickListener(this);
+		btnSignOut = (Button) findViewById(R.id.sign_out_button);
+		btnSignOut.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View view) {
 				if (view.getId() == R.id.sign_out_button) {
-				    if (mGoogleApiClient.isConnected()) {
-				      Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-				      mGoogleApiClient.disconnect();
-				      mGoogleApiClient.connect();
-				   // Prior to disconnecting, run clearDefaultAccount().
-				      Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-				      Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
-				          .setResultCallback(new ResultCallback<Status>() {
-
-							@Override
-							public void onResult(Status arg0) {
-								// mGoogleApiClient is now disconnected and access has been revoked.
-							    // Trigger app logic to comply with the developer policies
-								
-							}
-
-
-				      });
-				      
-				    }
-				  }
-				
+					if (mGoogleApiClient.isConnected()) {
+						Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+						mGoogleApiClient.disconnect();
+						mGoogleApiClient.connect();
+						updateUI(false);
+					}
+				}
 			}
 		});
+
+		btnPlay = (Button) findViewById(R.id.play);
+		btnFriends = (Button) findViewById(R.id.friends);
+
 	}
 
 	protected void onStart() {
@@ -120,6 +120,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		// We've resolved any connection errors. mGoogleApiClient can be used to
 		// access Google APIs on behalf of the user.
 		mSignInClicked = false;
+		updateUI(true);
 		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 
 	}
@@ -127,7 +128,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	@Override
 	public void onConnectionSuspended(int arg0) {
 		mGoogleApiClient.connect();
-
+		updateUI(false);
 	}
 
 	protected void onActivityResult(int requestCode, int responseCode,
@@ -169,6 +170,20 @@ public class MainActivity extends Activity implements OnClickListener,
 				&& !mGoogleApiClient.isConnecting()) {
 			mSignInClicked = true;
 			resolveSignInError();
+		}
+	}
+
+	private void updateUI(boolean isSignedIn) {
+		if (isSignedIn) {
+			btnSignIn.setVisibility(View.GONE);
+			btnSignOut.setVisibility(View.VISIBLE);
+			btnPlay.setVisibility(View.VISIBLE);
+			btnFriends.setVisibility(View.VISIBLE);
+		} else {
+			btnSignIn.setVisibility(View.VISIBLE);
+			btnSignOut.setVisibility(View.GONE);
+			btnPlay.setVisibility(View.GONE);
+			btnFriends.setVisibility(View.GONE);
 		}
 	}
 }
