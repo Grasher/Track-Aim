@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<list key="installedFeatures">
+		<item value="com.android.ide.eclipse.adt.package.feature:23.0.2.1259578"/>
+		<item value="net.sourceforge.keytool:1.4.2"/>
+		<item value="org.eclipse.cdt.gdb:7.0.0.201302132326"/>
+		<item value="org.eclipse.cdt.mylyn:5.8.0.v20140606-1805"/>
+		<item value="org.eclipse.cdt:8.1.2.201302132326"/>
+		<item value="org.eclipse.egit.mylyn:3.5.2.201411120430-r"/>
+		<item value="org.eclipse.egit.source:3.5.2.201411120430-r"/>
+		<item value="org.eclipse.egit:3.5.2.201411120430-r"/>
+		<item value="org.eclipse.emf.common:2.9.1.v20130827-0309"/>
+		<item value="org.eclipse.emf.ecore:2.9.1.v20130827-0309"/>
+		<item value="org.eclipse.help:1.4.1.v20120912-144938-8R7xFOXFLWUl7PpNBh_HIGkb4"/>
+		<item value="org.eclipse.jdt:3.8.2.v20130116-090414-8-8nFu3FNOfwKLRuqgXKIy9z0I83"/>
+		<item value="org.eclipse.jgit.http.apache:3.5.2.201411120430-r"/>
+		<item value="org.eclipse.jgit.java7:3.5.2.201411120430-r"/>
+		<item value="org.eclipse.jgit.pgm:3.5.2.201411120430-r"/>
+		<item value="org.eclipse.jgit:3.5.2.201411120430-r"/>
+		<item value="org.eclipse.mylyn.bugzilla_feature:3.12.0.v20140605-1718"/>
+		<item value="org.eclipse.mylyn.commons.compatibility:3.12.0.v20140605-1728"/>
+		<item value="org.eclipse.mylyn.commons.identity:1.5.0.v20140702-2248"/>
+		<item value="org.eclipse.mylyn.commons.notifications:1.5.0.v20140702-2248"/>
+		<item value="org.eclipse.mylyn.commons.repositories.http:1.4.0.v20140605-1728"/>
+		<item value="org.eclipse.mylyn.commons.repositories:1.5.0.v20140905-0008"/>
+		<item value="org.eclipse.mylyn.commons.sdk:3.12.0.v20140605-1728"/>
+		<item value="org.eclipse.mylyn.commons:3.13.0.v20140704-2323"/>
+		<item value="org.eclipse.mylyn.context.sdk:3.12.0.v20140606-1805"/>
+		<item value="org.eclipse.mylyn.context_feature:3.13.0.v20140819-2236"/>
+		<item value="org.eclipse.mylyn.discovery:3.13.0.v20140820-1854"/>
+		<item value="org.eclipse.mylyn.ide_feature:3.12.0.v20140606-1805"/>
+		<item value="org.eclipse.mylyn.java_feature:3.12.0.v20140606-1805"/>
+		<item value="org.eclipse.mylyn.monitor:3.13.0.v20140702-2155"/>
+		<item value="org.eclipse.mylyn.pde_feature:3.12.0.v20140606-1805"/>
+		<item value="org.eclipse.mylyn.sdk_feature:3.12.0.v20140605-1718"/>
+		<item value="org.eclipse.mylyn.tasks.ide:3.12.0.v20140605-1718"/>
+		<item value="org.eclipse.mylyn.team_feature:3.13.0.v20140702-2225"/>
+		<item value="org.eclipse.mylyn.test_feature:3.12.0.v20140605-1718"/>
+		<item value="org.eclipse.mylyn.trac_feature:3.12.0.v20140605-1718"/>
+		<item value="org.eclipse.mylyn_feature:3.13.0.v20140826-1734"/>
+		<item value="org.eclipse.platform:4.2.1.v20130118-173121-9MF7GHYdG0B5kx4E_SkfZV-1mNjVATf67ZAb7"/>
+		<item value="org.eclipse.rcp:4.2.2.v20130129-152330-7IARAABrMQkGSvMgQnUlz-DQz00h"/>
+	</list>
 	<section name="CleanDialogSettings">
 		<item value="500" key="DIALOG_WIDTH"/>
 		<item value="false" key="TOGGLE_SELECTED"/>

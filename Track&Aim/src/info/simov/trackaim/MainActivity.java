@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -15,12 +17,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 
 public class MainActivity extends Activity implements OnClickListener,
 		ConnectionCallbacks, OnConnectionFailedListener {
 	/* Request code used to invoke sign in user interactions. */
-	private static final int RC_SIGN_IN = 0;
-
+	private static final int RC_SIGN_IN = 0, PROFILE_PIC_SIZE = 100;
 	/* Client used to interact with Google APIs. */
 	private GoogleApiClient mGoogleApiClient;
 
@@ -43,9 +45,9 @@ public class MainActivity extends Activity implements OnClickListener,
 	private ConnectionResult mConnectionResult;
 
 	private SignInButton btnSignIn;
-	private Button btnSignOut;
-	private Button btnPlay;
-	private Button btnFriends;
+	private Button btnSignOut, btnPlay, btnFriends;
+	private TextView username;
+	private ImageView profileImage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +64,14 @@ public class MainActivity extends Activity implements OnClickListener,
 	}
 
 	private void buttonBehavior() {
+		username = (TextView) findViewById(R.id.username);
+		profileImage = (ImageView) findViewById(R.id.profileImage);
+		
 		btnSignIn = (SignInButton) findViewById(R.id.sign_in_button);
 		btnSignIn.setOnClickListener(this);
+		
 		btnSignOut = (Button) findViewById(R.id.sign_out_button);
+		
 		btnSignOut.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -81,7 +88,25 @@ public class MainActivity extends Activity implements OnClickListener,
 		});
 
 		btnPlay = (Button) findViewById(R.id.play);
+		btnPlay.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i=new Intent(MainActivity.this,FriendsActivity.class);
+				
+			}
+		});
+		
 		btnFriends = (Button) findViewById(R.id.friends);
+		btnFriends.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i=new Intent(MainActivity.this,FriendsActivity.class);
+				startActivity(i);
+				
+			}
+		});
 
 	}
 
@@ -120,6 +145,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		// We've resolved any connection errors. mGoogleApiClient can be used to
 		// access Google APIs on behalf of the user.
 		mSignInClicked = false;
+		getProfileInformation();
 		updateUI(true);
 		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 
@@ -179,11 +205,38 @@ public class MainActivity extends Activity implements OnClickListener,
 			btnSignOut.setVisibility(View.VISIBLE);
 			btnPlay.setVisibility(View.VISIBLE);
 			btnFriends.setVisibility(View.VISIBLE);
+			username.setVisibility(View.VISIBLE);
+			profileImage.setVisibility(View.VISIBLE);
 		} else {
 			btnSignIn.setVisibility(View.VISIBLE);
 			btnSignOut.setVisibility(View.GONE);
 			btnPlay.setVisibility(View.GONE);
 			btnFriends.setVisibility(View.GONE);
+			username.setVisibility(View.GONE);
+			profileImage.setVisibility(View.GONE);
+		}
+	}
+
+	private void getProfileInformation() {
+		try {
+			if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+				Person currentPerson = Plus.PeopleApi
+						.getCurrentPerson(mGoogleApiClient);
+				String personName = currentPerson.getDisplayName();
+				String personPhotoUrl = currentPerson.getImage().getUrl();
+				String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+				username.setText(personName + ",\n " + email);
+				personPhotoUrl = personPhotoUrl.substring(0,
+						personPhotoUrl.length() - 2)
+						+ PROFILE_PIC_SIZE;
+
+				new LoadProfileImage(profileImage).execute(personPhotoUrl);
+			} else {
+				Toast.makeText(getApplicationContext(),
+						"Person information is null", Toast.LENGTH_LONG).show();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

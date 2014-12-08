@@ -23,7 +23,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:text="Sign Out"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 
     <Button
         android:id="@+id/play"
@@ -34,7 +35,8 @@
         android:layout_alignRight="@+id/friends"
         android:layout_marginTop="141dp"
         android:text="Jogar"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 
     <Button
         android:id="@+id/friends"
@@ -44,16 +46,26 @@
         android:layout_alignRight="@+id/sign_out_button"
         android:layout_centerVertical="true"
         android:text="Amigos"
-        android:visibility="gone" />
+        android:visibility="gone"
+         />
 
-     <TextView
-         android:id="@+id/textView1"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/sign_in_button"
-         android:layout_alignParentTop="true"
-         android:layout_marginTop="80dp"
-         android:text="Track&amp;Aim Online"
-         android:textAppearance="?android:attr/textAppearanceLarge" />
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/common_full_open_on_phone" 
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileImage"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceSmall" 
+        android:visibility="gone"/>
 
 </RelativeLayout>

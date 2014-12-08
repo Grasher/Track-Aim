@@ -106,6 +106,7 @@ int id none 0x7f080001
 int id normal 0x7f080002
 int id play 0x7f080017
 int id production 0x7f080007
+int id profileImage 0x7f080018
 int id sandbox 0x7f080008
 int id satellite 0x7f080003
 int id selectionDetails 0x7f08000b
@@ -113,7 +114,7 @@ int id sign_in_button 0x7f080014
 int id sign_out_button 0x7f080015
 int id strict_sandbox 0x7f080009
 int id terrain 0x7f080004
-int id textView1 0x7f080018
+int id username 0x7f080019
 int id wrap_content 0x7f08000d
 int integer google_play_services_version 0x7f070000
 int layout activity_friends 0x7f030000
