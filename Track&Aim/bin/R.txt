@@ -60,8 +60,8 @@ int color wallet_holo_blue_light 0x7f060015
 int color wallet_link_text_light 0x7f060016
 int color wallet_primary_text_holo_light 0x7f06001a
 int color wallet_secondary_text_holo_dark 0x7f06001b
-int dimen activity_horizontal_margin 0x7f090000
-int dimen activity_vertical_margin 0x7f090001
+int dimen activity_horizontal_margin 0x7f080000
+int dimen activity_vertical_margin 0x7f080001
 int drawable common_full_open_on_phone 0x7f020000
 int drawable common_ic_googleplayservices 0x7f020001
 int drawable common_signin_btn_icon_dark 0x7f020002
@@ -95,44 +95,6 @@ int drawable ic_plusone_standard_off_client 0x7f02001d
 int drawable ic_plusone_tall_off_client 0x7f02001e
 int drawable powered_by_google_dark 0x7f02001f
 int drawable powered_by_google_light 0x7f020020
-<<<<<<< HEAD
-int id action_settings 0x7f070022
-int id book_now 0x7f070010
-int id buyButton 0x7f07000a
-int id buy_now 0x7f07000f
-int id buy_with_google 0x7f07000e
-int id classic 0x7f070011
-int id dummy_button 0x7f07001e
-int id findUser 0x7f07001f
-int id friendRequests 0x7f070015
-int id friends 0x7f070018
-int id fullscreen_content 0x7f07001c
-int id fullscreen_content_controls 0x7f07001d
-int id grayscale 0x7f070012
-int id holo_dark 0x7f070005
-int id holo_light 0x7f070006
-int id hybrid 0x7f070004
-int id match_parent 0x7f07000c
-int id monochrome 0x7f070013
-int id none 0x7f070000
-int id normal 0x7f070001
-int id play 0x7f070019
-int id production 0x7f070007
-int id profileImage 0x7f07001a
-int id sandbox 0x7f070008
-int id satellite 0x7f070002
-int id search 0x7f070021
-int id searchFriends 0x7f070014
-int id selectionDetails 0x7f07000b
-int id sign_in_button 0x7f070016
-int id sign_out_button 0x7f070017
-int id strict_sandbox 0x7f070009
-int id terrain 0x7f070003
-int id username 0x7f07001b
-int id usersList 0x7f070020
-int id wrap_content 0x7f07000d
-int integer google_play_services_version 0x7f080000
-=======
 int id action_settings 0x7f0a0021
 int id book_now 0x7f0a000e
 int id button_capture 0x7f0a0015
@@ -168,19 +130,12 @@ int id username 0x7f0a001d
 int id usersList 0x7f0a001f
 int id wrap_content 0x7f0a000d
 int integer google_play_services_version 0x7f070000
->>>>>>> cf4f65afaeecbf37794f2a31f2326275af116f68
 int layout activity_choose_group 0x7f030000
 int layout activity_friend_request 0x7f030001
 int layout activity_friends 0x7f030002
 int layout activity_main 0x7f030003
-<<<<<<< HEAD
-int layout activity_play 0x7f030004
-int layout activity_search_friends 0x7f030005
-int menu search_friends 0x7f0a0000
-=======
 int layout activity_search_friends 0x7f030004
 int menu search_friends 0x7f090000
->>>>>>> cf4f65afaeecbf37794f2a31f2326275af116f68
 int string accept 0x7f050002
 int string action_settings 0x7f050027
 int string app_name 0x7f050023

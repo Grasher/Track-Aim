@@ -11,8 +11,19 @@
 <fullyQualifiedTypeName name="info.simov.trackaim.R.id"/>
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="java.lang.Integer"/>
-<fullyQualifiedTypeName name="android.content.Intent"/>
 <fullyQualifiedTypeName name="info.simov.trackaim.FriendsActivity"/>
 <fullyQualifiedTypeName name="info.simov.trackaim.SearchFriendsActivity"/>
 <fullyQualifiedTypeName name="info.simov.trackaim.FriendRequestActivity"/>
+<fullyQualifiedTypeName name="info.simov.trackaim.PlayActivity"/>
+<fullyQualifiedTypeName name="android.provider.MediaStore"/>
+<fullyQualifiedTypeName name="android.content.Intent"/>
+<fullyQualifiedTypeName name="info.simov.trackaim.ChooseGroupActivity"/>
+<fullyQualifiedTypeName name="android.content.pm.PackageManager"/>
+<fullyQualifiedTypeName name="android.view.SurfaceHolder"/>
+<fullyQualifiedTypeName name="android.view.SurfaceView"/>
+<fullyQualifiedTypeName name="android.hardware.Camera"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="android.widget.FrameLayout"/>
 </qualifiedTypeNameHistroy>
