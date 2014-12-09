@@ -1,5 +1,6 @@
 package info.simov.trackaim;
 
+import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
@@ -18,6 +19,8 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+
+import MySQLAccess.*;
 
 public class MainActivity extends Activity implements OnClickListener,
 		ConnectionCallbacks, OnConnectionFailedListener {
@@ -148,7 +151,14 @@ public class MainActivity extends Activity implements OnClickListener,
 		getProfileInformation();
 		updateUI(true);
 		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-
+		MySQLAccess dao = new MySQLAccess();
+		try {
+			Toast.makeText(this, dao.readDataBase() + "", Toast.LENGTH_LONG).show();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
 	}
 
 	@Override
