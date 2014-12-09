@@ -4,32 +4,22 @@
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <EditText
-        android:id="@+id/findUser"
+    <Button
+        android:id="@+id/searchFriends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="31dp"
-        android:ems="10" />
-
-    <ListView
-        android:id="@+id/usersList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:visibility="gone" >
-
-    </ListView>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="148dp"
+        android:text="Procurar Amigos" />
 
     <Button
-        android:id="@+id/search"
-        style="?android:attr/buttonStyleSmall"
+        android:id="@+id/friendRequests"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/findUser"
-        android:text="Procurar" />
+        android:layout_below="@+id/searchFriends"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:text="Pedidos de Amizade" />
 
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package info.simov.trackaim;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,27 +16,30 @@ import android.widget.Toast;
 
 public class FriendsActivity extends Activity {
 
-	private EditText userName;
-	private Button search;
-	private ListView userFoundList;
+	private Button searchFriends, friendsRequests;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_friends);
 		
-		userName = (EditText) findViewById(R.id.findUser);
-		userFoundList = (ListView) findViewById(R.id.usersList);
-		search = (Button) findViewById(R.id.search);
-		search.setOnClickListener(new OnClickListener() {
-
+		searchFriends = (Button) findViewById(R.id.friendRequests);
+		searchFriends.setOnClickListener(new OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
-				
-				String name = userName.getText().toString();
-				Toast.makeText(getApplicationContext(), "User: " + name,
-						Toast.LENGTH_LONG).show();
-
+				Intent i = new Intent(FriendsActivity.this,SearchFriendsActivity.class);
+				startActivity(i);
+			}
+		});
+		
+		friendsRequests = (Button) findViewById(R.id.searchFriends);
+		friendsRequests.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(FriendsActivity.this,FriendRequestActivity.class);
+				startActivity(i);
 			}
 		});
 

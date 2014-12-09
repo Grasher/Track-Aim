@@ -35,6 +35,24 @@
             android:name=".FriendsActivity"
             android:label="@string/title_activity_friends" >
         </activity>
+        <activity
+            android:name=".SearchFriendsActivity"
+            android:label="@string/title_activity_search_friends" >
+        </activity>
+        <activity
+            android:name=".FriendRequestActivity"
+            android:label="@string/title_activity_friend_request" >
+        </activity>
+        <activity
+            android:name=".ChooseGroupActivity"
+            android:label="@string/title_activity_choose_group" >
+        </activity>
+        <activity
+            android:name=".PlayActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_play"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
     </application>
 
 </manifest>
