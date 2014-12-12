@@ -1,6 +1,6 @@
 package info.simov.trackaim;
 
-import android.R.string;
+import MySQLAccess.MySQLAccess;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
@@ -19,8 +19,6 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-
-import MySQLAccess.*;
 
 public class MainActivity extends Activity implements OnClickListener,
 		ConnectionCallbacks, OnConnectionFailedListener {
@@ -95,7 +93,7 @@ public class MainActivity extends Activity implements OnClickListener,
 			
 			@Override
 			public void onClick(View v) {
-				Intent i=new Intent(MainActivity.this,ChooseGroupActivity.class);
+				Intent i=new Intent(MainActivity.this,PlayActivity.class);
 				startActivity(i);
 			}
 		});
