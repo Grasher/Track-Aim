@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="libs/mysql_connector_java_5.1.34_bin.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="libs/wikitudesdk.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
