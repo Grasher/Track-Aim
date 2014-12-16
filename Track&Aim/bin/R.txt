@@ -95,14 +95,15 @@ int drawable ic_plusone_standard_off_client 0x7f02001d
 int drawable ic_plusone_tall_off_client 0x7f02001e
 int drawable powered_by_google_dark 0x7f02001f
 int drawable powered_by_google_light 0x7f020020
-int id action_settings 0x7f0a0020
+int drawable radar 0x7f020021
+int id action_settings 0x7f0a0021
 int id book_now 0x7f0a000e
 int id buyButton 0x7f0a000a
 int id buy_now 0x7f0a000f
 int id buy_with_google 0x7f0a0010
 int id camera_preview 0x7f0a001c
 int id classic 0x7f0a0011
-int id findUser 0x7f0a001d
+int id findUser 0x7f0a001e
 int id friendRequests 0x7f0a0015
 int id friends 0x7f0a0018
 int id grayscale 0x7f0a0012
@@ -110,6 +111,7 @@ int id holo_dark 0x7f0a0005
 int id holo_light 0x7f0a0006
 int id hybrid 0x7f0a0000
 int id match_parent 0x7f0a000c
+int id minimap 0x7f0a001d
 int id monochrome 0x7f0a0013
 int id none 0x7f0a0001
 int id normal 0x7f0a0002
@@ -118,7 +120,7 @@ int id production 0x7f0a0007
 int id profileImage 0x7f0a001a
 int id sandbox 0x7f0a0008
 int id satellite 0x7f0a0003
-int id search 0x7f0a001f
+int id search 0x7f0a0020
 int id searchFriends 0x7f0a0014
 int id selectionDetails 0x7f0a000b
 int id sign_in_button 0x7f0a0016
@@ -126,7 +128,7 @@ int id sign_out_button 0x7f0a0017
 int id strict_sandbox 0x7f0a0009
 int id terrain 0x7f0a0004
 int id username 0x7f0a001b
-int id usersList 0x7f0a001e
+int id usersList 0x7f0a001f
 int id wrap_content 0x7f0a000d
 int integer google_play_services_version 0x7f070000
 int layout activity_friend_request 0x7f030000

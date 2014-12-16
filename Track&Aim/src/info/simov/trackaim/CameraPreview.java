@@ -1,5 +1,4 @@
 package info.simov.trackaim;
-
 import java.io.IOException;
 
 import android.content.Context;
@@ -31,7 +30,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
         } catch (IOException e) {
-            Log.d("batata", "Error setting camera preview: " + e.getMessage());
+            Log.d("p", "Error setting camera preview: " + e.getMessage());
         }
     }
 
@@ -64,7 +63,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.startPreview();
 
         } catch (Exception e){
-            Log.d("batata", "Error starting camera preview: " + e.getMessage());
+            Log.d("p", "Error starting camera preview: " + e.getMessage());
         }
     }
 }
