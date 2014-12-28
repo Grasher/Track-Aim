@@ -23,8 +23,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer"
+              android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -67,10 +71,15 @@
             android:label="@string/title_activity_map"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-        
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCoECBx6-Ubk-6n4hyeziSATIu71VGkR2g" />
+
+        <activity
+            android:name=".PlayExActivity"
+            android:label="@string/title_activity_play_ex" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+     <Button
+         android:id="@+id/obterCoordenadas"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/guardar"
+         android:layout_alignRight="@+id/guardar"
+         android:text="Minhas Coordenadas" />
+
+     <EditText
+         android:id="@+id/longitude"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/obterCoordenadas"
+         android:layout_centerHorizontal="true"
+         android:layout_marginBottom="15dp"
+         android:ems="10"
+         android:inputType="numberSigned" />
+
+     <EditText
+         android:id="@+id/latitude"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/longitude"
+         android:layout_alignLeft="@+id/longitude"
+         android:layout_marginBottom="14dp"
+         android:ems="10"
+         android:inputType="numberSigned" />
+
+     <Button
+         android:id="@+id/guardar"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_above="@+id/pointer"
+         android:layout_centerHorizontal="true"
+         android:text="Guardar Coordenadas" />
+
+     <ImageView
+         android:id="@+id/pointer"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_centerHorizontal="true"
+         android:src="@drawable/pointer" />
+
+</RelativeLayout>

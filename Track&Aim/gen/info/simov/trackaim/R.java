@@ -383,68 +383,75 @@ containing a value of this type.
         public static final int activity_vertical_margin=0x7f080001;
     }
     public static final class drawable {
-        public static final int common_full_open_on_phone=0x7f020000;
-        public static final int common_ic_googleplayservices=0x7f020001;
-        public static final int common_signin_btn_icon_dark=0x7f020002;
-        public static final int common_signin_btn_icon_disabled_dark=0x7f020003;
-        public static final int common_signin_btn_icon_disabled_focus_dark=0x7f020004;
-        public static final int common_signin_btn_icon_disabled_focus_light=0x7f020005;
-        public static final int common_signin_btn_icon_disabled_light=0x7f020006;
-        public static final int common_signin_btn_icon_focus_dark=0x7f020007;
-        public static final int common_signin_btn_icon_focus_light=0x7f020008;
-        public static final int common_signin_btn_icon_light=0x7f020009;
-        public static final int common_signin_btn_icon_normal_dark=0x7f02000a;
-        public static final int common_signin_btn_icon_normal_light=0x7f02000b;
-        public static final int common_signin_btn_icon_pressed_dark=0x7f02000c;
-        public static final int common_signin_btn_icon_pressed_light=0x7f02000d;
-        public static final int common_signin_btn_text_dark=0x7f02000e;
-        public static final int common_signin_btn_text_disabled_dark=0x7f02000f;
-        public static final int common_signin_btn_text_disabled_focus_dark=0x7f020010;
-        public static final int common_signin_btn_text_disabled_focus_light=0x7f020011;
-        public static final int common_signin_btn_text_disabled_light=0x7f020012;
-        public static final int common_signin_btn_text_focus_dark=0x7f020013;
-        public static final int common_signin_btn_text_focus_light=0x7f020014;
-        public static final int common_signin_btn_text_light=0x7f020015;
-        public static final int common_signin_btn_text_normal_dark=0x7f020016;
-        public static final int common_signin_btn_text_normal_light=0x7f020017;
-        public static final int common_signin_btn_text_pressed_dark=0x7f020018;
-        public static final int common_signin_btn_text_pressed_light=0x7f020019;
-        public static final int ic_launcher=0x7f02001a;
-        public static final int ic_plusone_medium_off_client=0x7f02001b;
-        public static final int ic_plusone_small_off_client=0x7f02001c;
-        public static final int ic_plusone_standard_off_client=0x7f02001d;
-        public static final int ic_plusone_tall_off_client=0x7f02001e;
-        public static final int powered_by_google_dark=0x7f02001f;
-        public static final int powered_by_google_light=0x7f020020;
-        public static final int radar=0x7f020021;
+        public static final int alert=0x7f020000;
+        public static final int common_full_open_on_phone=0x7f020001;
+        public static final int common_ic_googleplayservices=0x7f020002;
+        public static final int common_signin_btn_icon_dark=0x7f020003;
+        public static final int common_signin_btn_icon_disabled_dark=0x7f020004;
+        public static final int common_signin_btn_icon_disabled_focus_dark=0x7f020005;
+        public static final int common_signin_btn_icon_disabled_focus_light=0x7f020006;
+        public static final int common_signin_btn_icon_disabled_light=0x7f020007;
+        public static final int common_signin_btn_icon_focus_dark=0x7f020008;
+        public static final int common_signin_btn_icon_focus_light=0x7f020009;
+        public static final int common_signin_btn_icon_light=0x7f02000a;
+        public static final int common_signin_btn_icon_normal_dark=0x7f02000b;
+        public static final int common_signin_btn_icon_normal_light=0x7f02000c;
+        public static final int common_signin_btn_icon_pressed_dark=0x7f02000d;
+        public static final int common_signin_btn_icon_pressed_light=0x7f02000e;
+        public static final int common_signin_btn_text_dark=0x7f02000f;
+        public static final int common_signin_btn_text_disabled_dark=0x7f020010;
+        public static final int common_signin_btn_text_disabled_focus_dark=0x7f020011;
+        public static final int common_signin_btn_text_disabled_focus_light=0x7f020012;
+        public static final int common_signin_btn_text_disabled_light=0x7f020013;
+        public static final int common_signin_btn_text_focus_dark=0x7f020014;
+        public static final int common_signin_btn_text_focus_light=0x7f020015;
+        public static final int common_signin_btn_text_light=0x7f020016;
+        public static final int common_signin_btn_text_normal_dark=0x7f020017;
+        public static final int common_signin_btn_text_normal_light=0x7f020018;
+        public static final int common_signin_btn_text_pressed_dark=0x7f020019;
+        public static final int common_signin_btn_text_pressed_light=0x7f02001a;
+        public static final int ic_launcher=0x7f02001b;
+        public static final int ic_plusone_medium_off_client=0x7f02001c;
+        public static final int ic_plusone_small_off_client=0x7f02001d;
+        public static final int ic_plusone_standard_off_client=0x7f02001e;
+        public static final int ic_plusone_tall_off_client=0x7f02001f;
+        public static final int pointer=0x7f020020;
+        public static final int powered_by_google_dark=0x7f020021;
+        public static final int powered_by_google_light=0x7f020022;
+        public static final int radar=0x7f020023;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0022;
+        public static final int action_settings=0x7f0a0027;
         public static final int book_now=0x7f0a000e;
         public static final int buyButton=0x7f0a000a;
         public static final int buy_now=0x7f0a000f;
         public static final int buy_with_google=0x7f0a0010;
         public static final int camera_preview=0x7f0a001d;
         public static final int classic=0x7f0a0011;
-        public static final int findUser=0x7f0a001f;
+        public static final int findUser=0x7f0a0024;
         public static final int friendRequests=0x7f0a0015;
         public static final int friends=0x7f0a0018;
         public static final int grayscale=0x7f0a0012;
+        public static final int guardar=0x7f0a0020;
         public static final int holo_dark=0x7f0a0005;
         public static final int holo_light=0x7f0a0006;
         public static final int hybrid=0x7f0a0000;
+        public static final int latitude=0x7f0a0022;
+        public static final int longitude=0x7f0a0021;
         public static final int map=0x7f0a001c;
         public static final int match_parent=0x7f0a000c;
         public static final int minimap=0x7f0a001e;
         public static final int monochrome=0x7f0a0013;
         public static final int none=0x7f0a0001;
         public static final int normal=0x7f0a0002;
+        public static final int obterCoordenadas=0x7f0a001f;
         public static final int play=0x7f0a0019;
+        public static final int pointer=0x7f0a0023;
         public static final int production=0x7f0a0007;
         public static final int profileImage=0x7f0a001a;
         public static final int sandbox=0x7f0a0008;
         public static final int satellite=0x7f0a0003;
-        public static final int search=0x7f0a0021;
+        public static final int search=0x7f0a0026;
         public static final int searchFriends=0x7f0a0014;
         public static final int selectionDetails=0x7f0a000b;
         public static final int sign_in_button=0x7f0a0016;
@@ -452,7 +459,7 @@ containing a value of this type.
         public static final int strict_sandbox=0x7f0a0009;
         public static final int terrain=0x7f0a0004;
         public static final int username=0x7f0a001b;
-        public static final int usersList=0x7f0a0020;
+        public static final int usersList=0x7f0a0025;
         public static final int wrap_content=0x7f0a000d;
     }
     public static final class integer {
@@ -464,7 +471,8 @@ containing a value of this type.
         public static final int activity_main=0x7f030002;
         public static final int activity_map=0x7f030003;
         public static final int activity_play=0x7f030004;
-        public static final int activity_search_friends=0x7f030005;
+        public static final int activity_play_ex=0x7f030005;
+        public static final int activity_search_friends=0x7f030006;
     }
     public static final class menu {
         public static final int search_friends=0x7f090000;
@@ -586,6 +594,7 @@ containing a value of this type.
         public static final int title_activity_fullscreen=0x7f05002d;
         public static final int title_activity_map=0x7f05002e;
         public static final int title_activity_play=0x7f05002a;
+        public static final int title_activity_play_ex=0x7f05002f;
         public static final int title_activity_search_friends=0x7f050026;
         /**  Text on a placeholder buy button when Google Play services is not
          available or up-to-date 

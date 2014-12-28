@@ -93,7 +93,7 @@ public class MainActivity extends Activity implements OnClickListener,
 			
 			@Override
 			public void onClick(View v) {
-				Intent i=new Intent(MainActivity.this,PlayActivity.class);
+				Intent i=new Intent(MainActivity.this,PlayExActivity.class);
 				startActivity(i);
 			}
 		});
