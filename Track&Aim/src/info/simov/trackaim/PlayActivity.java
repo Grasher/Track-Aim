@@ -1,79 +1,81 @@
 package info.simov.trackaim;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 
-public class PlayActivity extends Activity {
-	private Camera mCamera;
-	private CameraPreview mPreview;
-	private Button minimap;
+public class PlayActivity extends Activity implements SensorEventListener {
 
+	// record the compass picture angle turned
+	private float currentDegree = 0f;
+
+	// device sensor manager
+	private ImageView mPointer;
+	private Button map;
+	private SensorManager sensorManager;
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
-		if (checkCameraHardware(this)) {
-			// Create an instance of Camera
-			mCamera = getCameraInstance();
 
-			// Create our Preview view and set it as the content of our
-			// activity.
-			mPreview = new CameraPreview(this, mCamera);
-			FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-			preview.addView(mPreview);
-			minimap.findViewById(R.id.minimap);
-			minimap.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					
-				}
-			});
-			
-		}
+		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+		mPointer = (ImageView) findViewById(R.id.pointer);
+		map = (Button) findViewById(R.id.map);
+		
+
 	}
 
-	public static Camera getCameraInstance() {
-		Camera c = null;
-		try {
-			c = Camera.open(); // attempt to get a Camera instance
-		} catch (Exception e) {
-			// Camera is not available (in use or does not exist)
-		}
-		return c; // returns null if camera is unavailable
+	@Override
+	public void onAccuracyChanged(Sensor arg0, int arg1) {
+		// TODO Auto-generated method stub
+
 	}
 
-	private boolean checkCameraHardware(Context context) {
-		if (context.getPackageManager().hasSystemFeature(
-				PackageManager.FEATURE_CAMERA)) {
-			// this device has a camera
-			return true;
-		} else {
-			// no camera on this device
-			return false;
-		}
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+
+		// get the angle around the z-axis rotated
+		float degree = Math.round(event.values[0]);
+
+		// create a rotation animation (reverse turn degree degrees)
+		RotateAnimation ra = new RotateAnimation(currentDegree, -degree,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+
+		// how long the animation will take place
+		ra.setDuration(210);
+
+		// set the animation after the end of the reservation status
+		ra.setFillAfter(true);
+
+		// Start the animation
+		mPointer.startAnimation(ra);
+		currentDegree = -degree;
 	}
-	
-	 @Override
-	    protected void onPause() {
-	        super.onPause();
-	        releaseCamera();              // release the camera immediately on pause event
-	    }
 
+	@Override
+	protected void onResume() {
+		super.onResume();
 
-	    private void releaseCamera(){
-	        if (mCamera != null){
-	            mCamera.release();        // release the camera for other applications
-	            mCamera = null;
-	        }
-	    }
+		// for the system's orientation sensor registered listeners
+		sensorManager.registerListener(this,
+				sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+				SensorManager.SENSOR_DELAY_GAME);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		// to stop the listener and save battery
+		sensorManager.unregisterListener(this);
+	}
 
 }

@@ -29,46 +29,49 @@ import android.widget.Toast;
 
 public class PlayExActivity extends Activity implements SensorEventListener {
 
-		GeomagneticField geoField;
+	GeomagneticField geoField;
 
-		private ImageView mPointer;
-		private Sensor accelerometer;
-		private Sensor magnetometer;
-		private float[] mLastAccelerometer = new float[3];
-		private float[] mLastMagnetometer = new float[3];
-		private boolean mLastAccelerometerSet = false;
-		private boolean mLastMagnetometerSet = false;
-		private float[] mR = new float[9];
-		private float[] mOrientation = new float[3];
-		private float mCurrentDegree = 0f, bearing;
+	private ImageView mPointer;
+	private Sensor accelerometer;
+	private Sensor magnetometer;
+	private float[] mLastAccelerometer = new float[3];
+	private float[] mLastMagnetometer = new float[3];
+	private boolean mLastAccelerometerSet = false;
+	private boolean mLastMagnetometerSet = false;
+	private float[] mR = new float[9];
+	private float[] mOrientation = new float[3];
+	private float mCurrentDegree = 0f, bearing = 0;
+	float[] mGravity;
+	float[] mGeomagnetic;
+	private boolean haveCoordenates = false;
 
-		private EditText latitudeEditText, longitudeEditText;
-		private Button guardar, obter;
+	private EditText latitudeEditText, longitudeEditText;
+	private Button guardar, obter;
 
-		private LocationManager locationManager;
+	private LocationManager locationManager;
 
-		private static final NumberFormat nf = new DecimalFormat("##.########");
+	private static final NumberFormat nf = new DecimalFormat("##.########");
 
-		private static final String PROX_ALERT_INTENT = "com.example.sensorgps.lbs.ProximityAlert";
+	private static final String PROX_ALERT_INTENT = "com.example.sensorgps.lbs.ProximityAlert";
 
-		private static final long POINT_RADIUS = 1000; // in Meters
-		private static final long PROX_ALERT_EXPIRATION = -1;
+	private static final long POINT_RADIUS = 1000; // in Meters
+	private static final long PROX_ALERT_EXPIRATION = -1;
 
-		private static final String POINT_LATITUDE_KEY = "POINT_LATITUDE_KEY";
-		private static final String POINT_LONGITUDE_KEY = "POINT_LONGITUDE_KEY";
+	private static final String POINT_LATITUDE_KEY = "POINT_LATITUDE_KEY";
+	private static final String POINT_LONGITUDE_KEY = "POINT_LONGITUDE_KEY";
 
-		private static final long MINIMUM_DISTANCECHANGE_FOR_UPDATE = 1; // in
-																			// Meters
-		private static final long MINIMUM_TIME_BETWEEN_UPDATE = 1000; // in
-																		// Milliseconds
-
-		private SensorManager sensorManager;
+	private static final long MINIMUM_DISTANCECHANGE_FOR_UPDATE = 1; // in
+																		// Meters
+	private static final long MINIMUM_TIME_BETWEEN_UPDATE = 1000; // in
+																	// Milliseconds
+	float azimut;
+	private SensorManager sensorManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play_ex);
-		
+
 		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		accelerometer = sensorManager
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -100,6 +103,7 @@ public class PlayExActivity extends Activity implements SensorEventListener {
 			@Override
 			public void onClick(View arg0) {
 				saveProximityAlertPoint();
+				haveCoordenates = true;
 
 			}
 
@@ -115,7 +119,7 @@ public class PlayExActivity extends Activity implements SensorEventListener {
 
 		});
 	}
-	
+
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		// TODO Auto-generated method stub
@@ -132,23 +136,35 @@ public class PlayExActivity extends Activity implements SensorEventListener {
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		if (event.sensor == accelerometer) {
-			System.arraycopy(event.values, 0, mLastAccelerometer, 0,
-					event.values.length);
-			mLastAccelerometerSet = true;
-		} else if (event.sensor == magnetometer) {
-			System.arraycopy(event.values, 0, mLastMagnetometer, 0,
-					event.values.length);
-			mLastMagnetometerSet = true;
-		}
-		if (mLastAccelerometerSet && mLastMagnetometerSet) {
-			SensorManager.getRotationMatrix(mR, null, mLastAccelerometer,
-					mLastMagnetometer);
-			SensorManager.getOrientation(mR, mOrientation);
-			float azimuthInRadians = mOrientation[0];
-			float azimuthInDegress = (float) (Math.toDegrees(azimuthInRadians) + 360) % 360;
-			RotateAnimation ra = new RotateAnimation(
-					normalizeDegree(mCurrentDegree), -azimuthInDegress,
+		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+			mGravity = event.values;
+		if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
+			mGeomagnetic = event.values;
+		if (mGravity != null && mGeomagnetic != null) {
+			float R[] = new float[9];
+			float I[] = new float[9];
+			/*
+			 * Computes the inclination matrix I as well as the rotation matrix
+			 * R transforming a vector from the device coordinate system to the
+			 * world's coordinate system which is defined as a direct
+			 * orthonormal basis
+			 */
+			boolean success = SensorManager.getRotationMatrix(R, I, mGravity,
+					mGeomagnetic);
+			if (success) {
+				float orientation[] = new float[3];
+				/*
+				 * Computes the device's orientation based on the rotation
+				 * matrix
+				 */
+				SensorManager.getOrientation(R, orientation);
+				azimut = (float) (Math.toDegrees(orientation[0]) + 360) % 360; // orientation
+																				// contains:
+																				// azimut,
+				// pitch and roll
+			}
+
+			RotateAnimation ra = new RotateAnimation(normalizeDegree(mCurrentDegree), -azimut,
 					Animation.RELATIVE_TO_SELF, 0.5f,
 					Animation.RELATIVE_TO_SELF, 0.5f);
 
@@ -157,10 +173,8 @@ public class PlayExActivity extends Activity implements SensorEventListener {
 			ra.setFillAfter(true);
 
 			mPointer.startAnimation(ra);
-
-			// mCurrentDegree = -azimuthInDegress;
-			mCurrentDegree = bearing -(bearing + mCurrentDegree)+ azimuthInDegress;
-
+			//mCurrentDegree = -azimut;
+			 mCurrentDegree = azimut+ (bearing - (bearing + mCurrentDegree)) ;
 		}
 
 	}
@@ -189,6 +203,7 @@ public class PlayExActivity extends Activity implements SensorEventListener {
 		saveCoordinatesInPreferences((float) location.getLatitude(),
 				(float) location.getLongitude());
 		addProximityAlert(location.getLatitude(), location.getLongitude());
+
 	}
 
 	private void addProximityAlert(double latitude, double longitude) {
@@ -259,12 +274,12 @@ public class PlayExActivity extends Activity implements SensorEventListener {
 
 			float distance = location.distanceTo(pointLocation);
 			bearing = pointLocation.bearingTo(location);
-
-			Toast.makeText(PlayExActivity.this,
-
-			"Distance from Point:" + distance + ", bearing: " + bearing,
-					Toast.LENGTH_LONG).show();
-
+			/*
+			 * Toast.makeText(PlayExActivity.this,
+			 * 
+			 * "Distance from Point:" + distance + ", bearing: " + bearing,
+			 * Toast.LENGTH_LONG).show();
+			 */
 			geoField = new GeomagneticField(Double.valueOf(
 					location.getLatitude()).floatValue(), Double.valueOf(
 					location.getLongitude()).floatValue(), Double.valueOf(
@@ -272,6 +287,11 @@ public class PlayExActivity extends Activity implements SensorEventListener {
 					System.currentTimeMillis());
 
 			mCurrentDegree += geoField.getDeclination();
+
+			Toast.makeText(PlayExActivity.this,
+
+			"Distance from Point:" + distance + ", bearing: " + bearing,
+					Toast.LENGTH_LONG).show();
 
 		}
 

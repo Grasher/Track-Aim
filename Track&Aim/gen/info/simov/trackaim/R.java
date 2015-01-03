@@ -421,14 +421,14 @@ containing a value of this type.
         public static final int radar=0x7f020023;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0027;
+        public static final int action_settings=0x7f0a0026;
         public static final int book_now=0x7f0a000e;
         public static final int buyButton=0x7f0a000a;
         public static final int buy_now=0x7f0a000f;
         public static final int buy_with_google=0x7f0a0010;
-        public static final int camera_preview=0x7f0a001d;
+        public static final int cameraSurfaceView=0x7f0a001d;
         public static final int classic=0x7f0a0011;
-        public static final int findUser=0x7f0a0024;
+        public static final int findUser=0x7f0a0023;
         public static final int friendRequests=0x7f0a0015;
         public static final int friends=0x7f0a0018;
         public static final int grayscale=0x7f0a0012;
@@ -440,18 +440,17 @@ containing a value of this type.
         public static final int longitude=0x7f0a0021;
         public static final int map=0x7f0a001c;
         public static final int match_parent=0x7f0a000c;
-        public static final int minimap=0x7f0a001e;
         public static final int monochrome=0x7f0a0013;
         public static final int none=0x7f0a0001;
         public static final int normal=0x7f0a0002;
         public static final int obterCoordenadas=0x7f0a001f;
         public static final int play=0x7f0a0019;
-        public static final int pointer=0x7f0a0023;
+        public static final int pointer=0x7f0a001e;
         public static final int production=0x7f0a0007;
         public static final int profileImage=0x7f0a001a;
         public static final int sandbox=0x7f0a0008;
         public static final int satellite=0x7f0a0003;
-        public static final int search=0x7f0a0026;
+        public static final int search=0x7f0a0025;
         public static final int searchFriends=0x7f0a0014;
         public static final int selectionDetails=0x7f0a000b;
         public static final int sign_in_button=0x7f0a0016;
@@ -459,7 +458,7 @@ containing a value of this type.
         public static final int strict_sandbox=0x7f0a0009;
         public static final int terrain=0x7f0a0004;
         public static final int username=0x7f0a001b;
-        public static final int usersList=0x7f0a0025;
+        public static final int usersList=0x7f0a0024;
         public static final int wrap_content=0x7f0a000d;
     }
     public static final class integer {

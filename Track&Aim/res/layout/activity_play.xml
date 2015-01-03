@@ -1,20 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="horizontal" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
 
-    <FrameLayout
-        android:id="@+id/camera_preview"
+    <info.simov.trackaim.CameraSurfaceView
+        android:id="@+id/cameraSurfaceView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" />
+        android:layout_height="fill_parent" />
 
-    <Button
-        android:id="@+id/minimap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+    <ImageView
+        android:id="@+id/pointer"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/pointer" />
+
+
+    <info.simov.trackaim.RotateButton
+        android:id="@+id/map"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:background="@drawable/radar" />
 
-</LinearLayout>
+</RelativeLayout>
