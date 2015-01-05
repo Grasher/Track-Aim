@@ -21,11 +21,7 @@ public class MapActivity extends Activity {
 			initilizeMap();
 
 			// Changing map type
-			googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-			// googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-			// googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-			// googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-			// googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+			googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
 			// Showing / hiding your current location
 			googleMap.setMyLocationEnabled(true);
@@ -45,67 +41,42 @@ public class MapActivity extends Activity {
 			// Enable / Disable zooming functionality
 			googleMap.getUiSettings().setZoomGesturesEnabled(true);
 
-			double latitude = 17.385044;
-			double longitude = 78.486671;
+			double latitude = 41.208670;
+			double longitude = -8.595970;
 
-			// lets place some 10 random markers
-			for (int i = 0; i < 10; i++) {
+			//Create marker based on the latitude and longitude defined
+			MarkerOptions marker = new MarkerOptions().position(
+					new LatLng(latitude, longitude)).title("Casa da Rita ");
+
+			googleMap.addMarker(marker);
+			
+			//Create other 2 random markers near the first one
+			for (int i = 0; i < 2; i++) {
 				// random latitude and logitude
 				double[] randomLocation = createRandLocation(latitude,
 						longitude);
-
 				// Adding a marker
-				MarkerOptions marker = new MarkerOptions().position(
+				MarkerOptions marker1 = new MarkerOptions().position(
 						new LatLng(randomLocation[0], randomLocation[1]))
 						.title("Hello Maps " + i);
-
-				Log.e("Random", "> " + randomLocation[0] + ", "
-						+ randomLocation[1]);
-
+				
 				// changing marker color
 				if (i == 0)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-				if (i == 1)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-				if (i == 2)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-				if (i == 3)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-				if (i == 4)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-				if (i == 5)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-				if (i == 6)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-				if (i == 7)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-				if (i == 8)
-					marker.icon(BitmapDescriptorFactory
+					marker1.icon(BitmapDescriptorFactory
 							.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-				if (i == 9)
-					marker.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+				if (i == 1)
+					marker1.icon(BitmapDescriptorFactory
+							.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));	
+				
+				googleMap.addMarker(marker1);
 
-				googleMap.addMarker(marker);
-
-				// Move the camera to last position with a zoom level
-				if (i == 9) {
-					CameraPosition cameraPosition = new CameraPosition.Builder()
-							.target(new LatLng(randomLocation[0],
-									randomLocation[1])).zoom(15).build();
-
-					googleMap.animateCamera(CameraUpdateFactory
-							.newCameraPosition(cameraPosition));
-				}
 			}
+
+			//Set the camera position towards the first localization
+			CameraPosition cameraPosition = new CameraPosition.Builder()
+					.target(new LatLng(latitude, longitude)).zoom(15).build();
+			googleMap.animateCamera(CameraUpdateFactory
+					.newCameraPosition(cameraPosition));
 
 		} catch (Exception e) {
 			e.printStackTrace();
