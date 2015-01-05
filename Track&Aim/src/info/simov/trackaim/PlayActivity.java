@@ -35,8 +35,13 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	private Sensor accelerometer;
 	private Sensor magnetometer;
 	private Sensor orientation;
-	private float[] mGravity;
-	private float[] mGeomagnetic;
+
+	private float[] mLastAccelerometer = new float[3];
+	private float[] mLastMagnetometer = new float[3];
+	private boolean mLastAccelerometerSet = false;
+	private boolean mLastMagnetometerSet = false;
+	private float[] mR = new float[9];
+	private float[] mOrientation = new float[3];
 
 	private LocationManager locationManager;
 
@@ -103,16 +108,18 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
 			onSensorChangeOrientation(event);
 		} else {
-			if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-				mGravity = event.values;
+			if (event.sensor == accelerometer) {
+				System.arraycopy(event.values, 0, mLastAccelerometer, 0,
+						event.values.length);
+				mLastAccelerometerSet = true;
+			} else if (event.sensor == magnetometer) {
+				System.arraycopy(event.values, 0, mLastMagnetometer, 0,
+						event.values.length);
+				mLastMagnetometerSet = true;
 			}
-			if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-				mGeomagnetic = event.values;
-			}
-			if (mGravity != null && mGeomagnetic != null) {
+			if (mLastAccelerometerSet && mLastMagnetometerSet) {
 				onSensorChangeAccelerometerAndMagnetic(event);
 			}
-
 		}
 	}
 
@@ -125,39 +132,24 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	}
 
 	private void onSensorChangeAccelerometerAndMagnetic(SensorEvent event) {
-		float R[] = new float[9];
-		float I[] = new float[9];
-		/*
-		 * Computes the inclination matrix I as well as the rotation matrix R
-		 * transforming a vector from the device coordinate system to the
-		 * world's coordinate system which is defined as a direct orthonormal
-		 * basis
-		 */
-		boolean success = SensorManager.getRotationMatrix(R, I, mGravity,
-				mGeomagnetic);
-		if (success) {
-			float orientation[] = new float[3];
-			/*
-			 * Computes the device's orientation based on the rotation matrix
-			 */
-			SensorManager.getOrientation(R, orientation);
-			azimut = (float) (Math.toDegrees(orientation[0]) + 360) % 360; // orientation
-																			// contains:
+		SensorManager.getRotationMatrix(mR, null, mLastAccelerometer,
+				mLastMagnetometer);
+		SensorManager.getOrientation(mR, mOrientation);
+		float azimuthInRadians = mOrientation[0];
+		float azimuthInDegress = (float) (Math.toDegrees(azimuthInRadians) + 360) % 360;
+		RotateAnimation ra = new RotateAnimation(normalizeDegree(targetDegree),
+				-azimuthInDegress, Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
 
-			RotateAnimation ra = new RotateAnimation(
-					normalizeDegree(targetDegree), -azimut,
-					Animation.RELATIVE_TO_SELF, 0.5f,
-					Animation.RELATIVE_TO_SELF, 0.5f);
+		ra.setDuration(250);
 
-			ra.setDuration(250);
+		ra.setFillAfter(true);
 
-			ra.setFillAfter(true);
-
-			mSeta.startAnimation(ra);
-			mDrawView.setMyLocation(targetDegree, -azimut);
-			targetDegree = azimut + (bearing - (bearing + targetDegree));
-		}
-
+		mSeta.startAnimation(ra);
+		mDrawView.setOffset(targetDegree);
+		mDrawView.setMyLocation(myLocation.getLatitude(),
+				myLocation.getLongitude());
+		targetDegree = bearing - (bearing + targetDegree) + azimuthInDegress;
 	}
 
 	private void onSensorChangeOrientation(SensorEvent event) {

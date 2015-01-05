@@ -16,70 +16,44 @@ public class ProximityIntentReceiver extends BroadcastReceiver {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		 String key = LocationManager.KEY_PROXIMITY_ENTERING;
-		
-		  
-		 
-		         Boolean entering = intent.getBooleanExtra(key, false);
-		 
-		         if (entering) {
-		 
-		             Log.d(getClass().getSimpleName(), "entering");
-		 
-		         }
-		 
-		         else {
-		 
-		             Log.d(getClass().getSimpleName(), "exiting");
-	
-		         }
-		 
-		          
-		 
-		         NotificationManager notificationManager =
-		 
-		             (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		 
-		          
-		 
-		         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, null, 0);       
-		 
-		          
-		 
-		         Notification notification = createNotification();
-		 
-		         notification.setLatestEventInfo(context,
-		 
-		             "Proximity Alert!", "You are near your point of interest.", pendingIntent);
-		 
-		          
-		 
-		         notificationManager.notify(NOTIFICATION_ID, notification);
+		String key = LocationManager.KEY_PROXIMITY_ENTERING;
+		Boolean entering = intent.getBooleanExtra(key, false);
+		if (entering) {
+			Log.d(getClass().getSimpleName(), "entering");
+		}
 
+		else {
+			Log.d(getClass().getSimpleName(), "exiting");
+
+		}
+		NotificationManager notificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+				null, 0);
+
+		Notification notification = createNotification();
+
+		notification.setLatestEventInfo(context,
+
+		"Alerta!!", "Existe um alvo por perto!", pendingIntent);
+
+		notificationManager.notify(NOTIFICATION_ID, notification);
 
 	}
 
 	private Notification createNotification() {
-		 Notification notification = new Notification();
-		     notification.icon = R.drawable.alert;
-		 
-		         notification.when = System.currentTimeMillis();
-		
-		         notification.flags |= Notification.FLAG_AUTO_CANCEL;
-		
-		         notification.flags |= Notification.FLAG_SHOW_LIGHTS;
-		
-		         notification.defaults |= Notification.DEFAULT_VIBRATE;
-		 
-		         notification.defaults |= Notification.DEFAULT_LIGHTS;
-		
-		         notification.ledARGB = Color.WHITE;
-		 
-		         notification.ledOnMS = 1500;
-		
-		         notification.ledOffMS = 1500;
-	
-		         return notification;
+		Notification notification = new Notification();
+		notification.icon = R.drawable.ic_launcher;
+		notification.when = System.currentTimeMillis();
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+		notification.defaults |= Notification.DEFAULT_VIBRATE;
+		notification.defaults |= Notification.DEFAULT_LIGHTS;
+		notification.ledARGB = Color.WHITE;
+		notification.ledOnMS = 1500;
+		notification.ledOffMS = 1500;
+		return notification;
 
 	}
 
