@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	private ConnectionResult mConnectionResult;
 
 	private SignInButton btnSignIn;
-	private Button btnSignOut, btnPlay, btnFriends;
+	private Button btnSignOut, btnPlay;
 	private TextView username;
 	private ImageView profileImage;
 
@@ -98,16 +98,6 @@ public class MainActivity extends Activity implements OnClickListener,
 			}
 		});
 		
-		btnFriends = (Button) findViewById(R.id.friends);
-		btnFriends.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent i=new Intent(MainActivity.this,FriendsActivity.class);
-				startActivity(i);
-				
-			}
-		});
 
 	}
 
@@ -212,14 +202,12 @@ public class MainActivity extends Activity implements OnClickListener,
 			btnSignIn.setVisibility(View.GONE);
 			btnSignOut.setVisibility(View.VISIBLE);
 			btnPlay.setVisibility(View.VISIBLE);
-			btnFriends.setVisibility(View.VISIBLE);
 			username.setVisibility(View.VISIBLE);
 			profileImage.setVisibility(View.VISIBLE);
 		} else {
 			btnSignIn.setVisibility(View.VISIBLE);
 			btnSignOut.setVisibility(View.GONE);
 			btnPlay.setVisibility(View.GONE);
-			btnFriends.setVisibility(View.GONE);
 			username.setVisibility(View.GONE);
 			profileImage.setVisibility(View.GONE);
 		}
