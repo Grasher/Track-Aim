@@ -1,16 +1,22 @@
 package info.simov.trackaim;
 
 import android.app.Activity;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 
-public class MapActivity extends Activity {
+public class MapActivity extends Activity implements LocationListener {
 
 	private GoogleMap googleMap;
-
+	double latitude;
+	double longitude;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,9 +47,9 @@ public class MapActivity extends Activity {
 			// Enable / Disable zooming functionality
 			googleMap.getUiSettings().setZoomGesturesEnabled(true);
 
-			double latitude = 41.208670;
-			double longitude = -8.595970;
-
+			latitude = 41.208537;
+			longitude = -8.595938;
+			
 			//Create marker based on the latitude and longitude defined
 			MarkerOptions marker = new MarkerOptions().position(
 					new LatLng(latitude, longitude)).title("Casa da Rita ");
@@ -115,5 +121,39 @@ public class MapActivity extends Activity {
 		return new double[] { latitude + ((Math.random() - 0.5) / 500),
 				longitude + ((Math.random() - 0.5) / 500),
 				150 + ((Math.random() - 0.5) * 10) };
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		
+		double latitude1 = location.getLatitude();
+		double longitude1 = location.getLongitude();
+		
+		Toast.makeText(getApplicationContext(), "latitude = "+latitude1+"; longitude="+longitude1+";",
+				   Toast.LENGTH_LONG).show();
+		
+		CameraPosition cameraPosition = new CameraPosition.Builder()
+		.target(new LatLng(latitude1, longitude1)).zoom(15).build();
+		googleMap.animateCamera(CameraUpdateFactory
+		.newCameraPosition(cameraPosition));
+		
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+		
 	}
 }
