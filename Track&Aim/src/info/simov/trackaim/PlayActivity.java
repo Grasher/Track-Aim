@@ -1,5 +1,7 @@
 package info.simov.trackaim;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -46,7 +48,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	private float[] mR = new float[9];
 	private float[] mOrientation = new float[3];
 
-	private LocationManager locationManager;
+	private ArrayList<LocationManager> locationManager;
 
 	private static final String PROX_ALERT_INTENT = "com.example.sensorgps.lbs.ProximityAlert";
 
@@ -63,17 +65,17 @@ public class PlayActivity extends Activity implements SensorEventListener {
 
 	private float bearing;
 	private info.simov.trackaim.DrawSurfaceView mDrawView;
-	private Location myLocation;
-	public boolean draw;
+	private ArrayList<Location> locations;
+	public boolean draw[];
 
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
-		Intent i = getIntent(); 
+		Intent i = getIntent();
 		String username = i.getStringExtra("USERNAME");
-		draw = false;
+
 		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		accelerometer = sensorManager
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -91,16 +93,15 @@ public class PlayActivity extends Activity implements SensorEventListener {
 			public void onClick(View v) {
 				Intent i = new Intent(PlayActivity.this, MapActivity.class);
 				startActivity(i);
-				
 
 			}
 		});
 
 		mDrawView = (DrawSurfaceView) findViewById(R.id.drawSurfaceView);
 
-		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		LocationManager loc1 = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		locationManager.requestLocationUpdates(
+		loc1.requestLocationUpdates(
 
 		LocationManager.GPS_PROVIDER,
 
@@ -111,19 +112,66 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		new MyLocationListener()
 
 		);
-		myLocation = new Location("");
-		myLocation.setLatitude(41.1780816666667);
-		myLocation.setLongitude(-8.608971666667);
-		saveProximityAlertPoint();
+		locationManager = new ArrayList<LocationManager>();
+		LocationManager loc2 = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
+		loc2.requestLocationUpdates(
+
+		LocationManager.GPS_PROVIDER,
+
+		MINIMUM_TIME_BETWEEN_UPDATE,
+
+		MINIMUM_DISTANCECHANGE_FOR_UPDATE,
+
+		new MyLocationListener()
+
+		);
+		LocationManager loc3 = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+		loc3.requestLocationUpdates(
+
+		LocationManager.GPS_PROVIDER,
+
+		MINIMUM_TIME_BETWEEN_UPDATE,
+
+		MINIMUM_DISTANCECHANGE_FOR_UPDATE,
+
+		new MyLocationListener()
+
+		);
+		locationManager.add(loc1);
+		locationManager.add(loc2);
+		locationManager.add(loc3);
+		locations = new ArrayList<Location>();
+		draw = new boolean[3];
+		Location l = new Location("");
+		l.setLatitude(41.1780816666667);
+		l.setLongitude(-8.608971666667);
+		saveProximityAlertPoint((float) l.getLatitude(),
+				(float) l.getLongitude(),0);
+		locations.add(l);
+		draw[0] = false;
+		l.setLatitude(11.1780816666667);
+		l.setLongitude(-18.608971666667);
+		saveProximityAlertPoint((float) l.getLatitude(),
+				(float) l.getLongitude(),1);
+		locations.add(l);
+		draw[1] = false;
+		l.setLatitude(1.1780816666667);
+		l.setLongitude(-1.608971666667);
+		saveProximityAlertPoint((float) l.getLatitude(),
+				(float) l.getLongitude(),2);
+		locations.add(l);
+		draw[2] = false;
 		layout = (RelativeLayout) findViewById(R.id.mainlayout);
 		layout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				boolean hit = mDrawView.isInCenter();
-				Toast.makeText(PlayActivity.this, "Hit" + hit, Toast.LENGTH_LONG).show();
-				//UpdateDb.UpdateScore(username, 1);
+				Toast.makeText(PlayActivity.this, "Hit" + hit,
+						Toast.LENGTH_LONG).show();
+				// UpdateDb.UpdateScore(username, 1);
 			}
 		});
 
@@ -163,24 +211,26 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		SensorManager.getOrientation(mR, mOrientation);
 		float azimuthInRadians = mOrientation[0];
 		float azimuthInDegress = (float) (Math.toDegrees(azimuthInRadians) + 360) % 360;
-		RotateAnimation ra = new RotateAnimation(normalizeDegree(targetDegree),
-				-azimuthInDegress, Animation.RELATIVE_TO_SELF, 0.5f,
-				Animation.RELATIVE_TO_SELF, 0.5f);
+		for (int i = 0; i < draw.length; i++) {
+			if (draw[i]) {
+				RotateAnimation ra = new RotateAnimation(normalizeDegree(targetDegree),
+						-azimuthInDegress, Animation.RELATIVE_TO_SELF, 0.5f,
+						Animation.RELATIVE_TO_SELF, 0.5f);
 
-		ra.setDuration(250);
+				ra.setDuration(250);
 
-		ra.setFillAfter(true);
-		float y = mOrientation[1];
+				ra.setFillAfter(true);
+				float y = mOrientation[1];
+				mSeta.startAnimation(ra);
+				mDrawView.Draw(true);
+				mDrawView.setOffset(targetDegree);
+				mDrawView.setMyLocation(locations.get(i).getLatitude(),
+						locations.get(i).getLongitude(), y);
+				targetDegree = bearing - (bearing + targetDegree) + azimuthInDegress;
+			}
+		}
 
-		mSeta.startAnimation(ra);
-		// if (draw) {
-		mDrawView.Draw(true);
-		mDrawView.setOffset(targetDegree);
-		mDrawView.setMyLocation(myLocation.getLatitude(),
-				myLocation.getLongitude(), y);
-		// }
-
-		targetDegree = bearing - (bearing + targetDegree) + azimuthInDegress;
+		
 	}
 
 	private void onSensorChangeOrientation(SensorEvent event) {
@@ -226,19 +276,18 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		sensorManager.unregisterListener(this, orientation);
 	}
 
-	private void saveProximityAlertPoint() {
+	private void saveProximityAlertPoint(float latitude, float longitude, int i) {
 
-		saveCoordinatesInPreferences((float) myLocation.getLatitude(),
-				(float) myLocation.getLongitude());
-		addProximityAlert(myLocation.getLatitude(), myLocation.getLongitude());
+		saveCoordinatesInPreferences((float) latitude, (float) longitude);
+		addProximityAlert((float) latitude, (float) longitude,i);
 
 	}
 
-	private void addProximityAlert(double latitude, double longitude) {
+	private void addProximityAlert(double latitude, double longitude ,int i) {
 		Intent intent = new Intent(PROX_ALERT_INTENT);
 		PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 0,
 				intent, 0);
-		locationManager.addProximityAlert(latitude, // the latitude of the
+		locationManager.get(i).addProximityAlert(latitude, // the latitude of the
 													// central point of the
 													// alert region
 				longitude, // the longitude of the central point of the alert
@@ -286,9 +335,9 @@ public class PlayActivity extends Activity implements SensorEventListener {
 
 			float distance = location.distanceTo(pointLocation);
 			bearing = pointLocation.bearingTo(location);
+			Toast.makeText(PlayActivity.this, "distance: " + distance,
+					Toast.LENGTH_LONG).show();
 
-			// Toast.makeText(PlayActivity.this, "distance: " + distance,
-			// Toast.LENGTH_LONG).show();
 			geoField = new GeomagneticField(Double.valueOf(
 					location.getLatitude()).floatValue(), Double.valueOf(
 					location.getLongitude()).floatValue(), Double.valueOf(
@@ -296,15 +345,24 @@ public class PlayActivity extends Activity implements SensorEventListener {
 					System.currentTimeMillis());
 
 			targetDegree += geoField.getDeclination();
-			draw = true;
 
-			// if (distance < 10) {
-			draw = true;
-			// distanceToPoint = distance;
-			// } else {
-			// draw = false;
-			// distanceToPoint = -1;
-			// }
+			for (int i = 0; i < locations.size(); i++) {
+				if (locations.get(i).getLatitude() == pointLocation
+						.getLatitude()
+						&& locations.get(i).getLongitude() == pointLocation
+								.getLongitude()) {
+					Toast.makeText(PlayActivity.this, "distance: " + distance,
+							Toast.LENGTH_LONG).show();
+					if (distance < 10) {
+						draw[i] = true;
+						// distanceToPoint = distance;
+					} else {
+						draw[i] = false;
+						// distanceToPoint = -1;
+					}
+
+				}
+			}
 
 		}
 
