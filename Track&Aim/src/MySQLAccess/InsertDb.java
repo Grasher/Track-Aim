@@ -14,32 +14,8 @@ public class InsertDb {
 	private Statement statement = null;
 	private ResultSet resultSet = null;
 
-	public void insertDb(String name) throws Exception {
-
-		try {
-			// this will load the MySQL driver, each DB has its own driver
-			Class.forName("com.mysql.jdbc.Driver");
-			// setup the connection with the DB.
-
-			connect = DriverManager.getConnection(
-					"jdbc:mysql://sql4.freemysqlhosting.net:3306/sql459503",
-					"sql459503", "sJ3!sJ8!");
-
-			preparedStatement = connect
-					.prepareStatement("INSERT INTO Test (Name) VALUES ('"
-							+ name + "')");
-			preparedStatement.executeUpdate();
-
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			close();
-		}
-	}
-
-	public String insertUser(String name, Localization l) throws Exception {
-		
-		int local_id = 0;
+public String insertUser(String name) throws Exception {
+	
 		int points = 0;
 
 		try {
@@ -54,21 +30,18 @@ public class InsertDb {
 			resultSet = statement.executeQuery("select * from User");
 			while (resultSet.next()) {
 				if (resultSet.getString("username").equalsIgnoreCase(name)) {
-					return name + ";existinguser";
+					return null;
 				}
 			}
 			// If not, insert User
-				local_id = createLocalization(l);
 				preparedStatement = connect
-						.prepareStatement("INSERT INTO User (username,localization_id,points) VALUES ('"
+						.prepareStatement("INSERT INTO User (username,points) VALUES ('"
 								+ name
-								+ "', '"
-								+ local_id
 								+ "', '"
 								+ points
 								+ "')");
 				preparedStatement.executeUpdate();
-			return name + ";newuser";
+			return null;
 		} catch (Exception e) {
 			throw e;
 		} finally {

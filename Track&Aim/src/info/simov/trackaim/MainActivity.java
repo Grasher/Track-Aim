@@ -1,5 +1,6 @@
 package info.simov.trackaim;
 
+import MySQLAccess.InsertDb;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
@@ -140,26 +141,8 @@ public class MainActivity extends Activity implements OnClickListener,
 		updateUI(true);
 		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 
-		// First we get the username logged in
-		// Plus.PeopleApi.loadVisible(mGoogleApiClient,
-		// null).setResultCallback(this);
-		// String personName="Unknown";
-		// if(Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-		// Person currentPerson =
-		// Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-		// personName = currentPerson.getDisplayName(); }
-
-		// Secondly, we create a location based on the user's curent location
-		// and insert the user in the database
-		// mLastLocation =
-		// LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-		// mLastLocation =
-		// LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-		// if (mLastLocation != null) {
-		// Localization l = new Localization(mLastLocation.getLongitude(),
-		// mLastLocation.getLatitude());
-		// InsertDb db = new InsertDb();
-		// db.insertUser(personName, l);
+		InsertDb db = new InsertDb();
+		db.insertUser(user);
 	}
 
 	@Override
