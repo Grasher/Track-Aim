@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
@@ -17,8 +18,14 @@
         android:layout_alignParentRight="true"
         android:src="@drawable/pointer" />
 
+    <info.simov.trackaim.DrawSurfaceView
+        android:id="@+id/drawSurfaceView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
 
-    <info.simov.trackaim.RotateButton
+    <Button
         android:id="@+id/map"
         android:layout_width="70dp"
         android:layout_height="70dp"
@@ -34,13 +41,6 @@
         android:layout_centerVertical="true"
         android:src="@drawable/mira" />
 
-    <info.simov.trackaim.DrawSurfaceView
-        android:id="@+id/drawSurfaceView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
-
     <ImageView
         android:id="@+id/seta"
         android:layout_width="70dp"
@@ -48,5 +48,18 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/seta" />
+
+    <TextView
+        android:id="@+id/acertou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="ACERTOU!"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="60sp"
+        android:textColor="#00ff00"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
 </RelativeLayout>

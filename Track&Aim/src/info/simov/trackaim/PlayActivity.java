@@ -1,8 +1,5 @@
 package info.simov.trackaim;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -18,19 +15,25 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class PlayActivity extends Activity implements SensorEventListener {
 
 	// record the compass picture angle turned
 	private float currentDegree = 0f, targetDegree;
 	private GeomagneticField geoField;
-	// device sensor manager
 	private ImageView mPointer, mSeta;
 	private Button map;
+	private RelativeLayout layout;
+
 	private SensorManager sensorManager;
 	private Sensor accelerometer;
 	private Sensor magnetometer;
@@ -45,11 +48,9 @@ public class PlayActivity extends Activity implements SensorEventListener {
 
 	private LocationManager locationManager;
 
-	private static final NumberFormat nf = new DecimalFormat("##.########");
-
 	private static final String PROX_ALERT_INTENT = "com.example.sensorgps.lbs.ProximityAlert";
 
-	private static final long POINT_RADIUS = 1000; // in Meters
+	private static final long POINT_RADIUS = 15; // in Meters
 	private static final long PROX_ALERT_EXPIRATION = -1;
 
 	private static final String POINT_LATITUDE_KEY = "POINT_LATITUDE_KEY";
@@ -60,16 +61,19 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	private static final long MINIMUM_TIME_BETWEEN_UPDATE = 1000; // in
 																	// Milliseconds
 
-	private float azimut, bearing;
+	private float bearing;
 	private info.simov.trackaim.DrawSurfaceView mDrawView;
 	private Location myLocation;
+	public boolean draw;
 
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
-
+		Intent i = getIntent(); 
+		String username = i.getStringExtra("USERNAME");
+		draw = false;
 		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		accelerometer = sensorManager
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -80,6 +84,17 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		mPointer = (ImageView) findViewById(R.id.pointer);
 		mSeta = (ImageView) findViewById(R.id.seta);
 		map = (Button) findViewById(R.id.map);
+		map.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
+		map.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(PlayActivity.this, MapActivity.class);
+				startActivity(i);
+				
+
+			}
+		});
 
 		mDrawView = (DrawSurfaceView) findViewById(R.id.drawSurfaceView);
 
@@ -97,9 +112,20 @@ public class PlayActivity extends Activity implements SensorEventListener {
 
 		);
 		myLocation = new Location("");
-		myLocation.setLatitude(41.20869333);
-		myLocation.setLongitude(-8.5841670);
+		myLocation.setLatitude(41.1780816666667);
+		myLocation.setLongitude(-8.608971666667);
 		saveProximityAlertPoint();
+
+		layout = (RelativeLayout) findViewById(R.id.mainlayout);
+		layout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				boolean hit = mDrawView.isInCenter();
+				Toast.makeText(PlayActivity.this, "Hit" + hit, Toast.LENGTH_LONG).show();
+				//UpdateDb.UpdateScore(username, 1);
+			}
+		});
 
 	}
 
@@ -144,11 +170,16 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		ra.setDuration(250);
 
 		ra.setFillAfter(true);
+		float y = mOrientation[1];
 
 		mSeta.startAnimation(ra);
+		// if (draw) {
+		mDrawView.Draw(true);
 		mDrawView.setOffset(targetDegree);
 		mDrawView.setMyLocation(myLocation.getLatitude(),
-				myLocation.getLongitude());
+				myLocation.getLongitude(), y);
+		// }
+
 		targetDegree = bearing - (bearing + targetDegree) + azimuthInDegress;
 	}
 
@@ -255,12 +286,9 @@ public class PlayActivity extends Activity implements SensorEventListener {
 
 			float distance = location.distanceTo(pointLocation);
 			bearing = pointLocation.bearingTo(location);
-			/*
-			 * Toast.makeText(PlayExActivity.this,
-			 * 
-			 * "Distance from Point:" + distance + ", bearing: " + bearing,
-			 * Toast.LENGTH_LONG).show();
-			 */
+
+			// Toast.makeText(PlayActivity.this, "distance: " + distance,
+			// Toast.LENGTH_LONG).show();
 			geoField = new GeomagneticField(Double.valueOf(
 					location.getLatitude()).floatValue(), Double.valueOf(
 					location.getLongitude()).floatValue(), Double.valueOf(
@@ -268,6 +296,16 @@ public class PlayActivity extends Activity implements SensorEventListener {
 					System.currentTimeMillis());
 
 			targetDegree += geoField.getDeclination();
+			draw = true;
+
+			// if (distance < 10) {
+			draw = true;
+			// distanceToPoint = distance;
+			// } else {
+			// draw = false;
+			// distanceToPoint = -1;
+			// }
+
 		}
 
 		@Override

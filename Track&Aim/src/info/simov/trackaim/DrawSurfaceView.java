@@ -12,13 +12,15 @@ import android.util.Log;
 import android.view.View;
 
 public class DrawSurfaceView extends View {
-	Point center = new Point(90d, 110.8000, "Center");
-	Point me = new Point(-3.870932d, 11.204727d, "Me");
+	Point center = new Point(90d, 110.8000, 0);
+	Point me = new Point(-3.870932d, 11.204727d, 0);
 	Paint mPaint;
 	private double OFFSET = 0d;
 	private float screenWidth, screenHeight;
 	private Drawable d;
 	private Bitmap mTarget;
+	private float altitude;
+	private boolean draw;
 
 	public DrawSurfaceView(Context c, Paint paint) {
 		super(c);
@@ -48,39 +50,43 @@ public class DrawSurfaceView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		//Point location = new Point(0, 0, "POint");
-		int targetCentreX = mTarget.getWidth() / 2;
-		int targetCentreY = mTarget.getHeight() / 2;
-		double dist = distInMetres(me, center);
-		double angle = bearing(me.latitude, me.longitude, center.latitude,
-				center.longitude) - OFFSET;
-		double xPos, yPos;
-		if (angle < 0)
-			angle = (angle + 360) % 360;
+		if (draw) {
+			// Point location = new Point(0, 0, "POint");
+			int targetCentreX = mTarget.getWidth() / 2;
+			int targetCentreY = mTarget.getHeight() / 2;
+			double dist = distInMetres(me, center);
+			double angle = bearing(me.latitude, me.longitude, center.latitude,
+					center.longitude) - OFFSET;
+			double xPos, yPos;
+			if (angle < 0)
+				angle = (angle + 360) % 360;
 
-		xPos = Math.sin(Math.toRadians(angle)) * dist;
-		yPos = Math.sqrt(Math.pow(dist, 2) - Math.pow(xPos, 2));
-		if (angle > 90 && angle < 270)
-			yPos *= -1;
-		double posInPx = angle * (screenWidth / 90d);
-		xPos = posInPx - targetCentreX;
-		yPos = yPos + targetCentreY;
+			xPos = Math.sin(Math.toRadians(angle)) * dist;
+			yPos = Math.sqrt(Math.pow(dist, 2) - Math.pow(xPos, 2));
+			if (angle > 90 && angle < 270)
+				yPos *= -1;
+			double posInPx = angle * (screenWidth / 90d);
+			xPos = posInPx - targetCentreX;
+			yPos = yPos + targetCentreY;
 
-		if (angle <= 45)
-			center.x = (float) ((screenWidth / 2) + xPos);
+			if (angle <= 45)
+				center.x = (float) ((screenWidth / 2) + xPos);
 
-		else if (angle >= 315)
-			center.x = (float) ((screenWidth / 2) - ((screenWidth * 4) - xPos));
+			else if (angle >= 315)
+				center.x = (float) ((screenWidth / 2) - ((screenWidth * 4) - xPos));
 
-		else
-			center.x = (float) (float) (screenWidth * 9); // somewhere off the
-															// screen
+			else
+				center.x = (float) (float) (screenWidth * 9); // somewhere off
+																// the
+																// screen
 
-		center.y = (float) screenHeight / 2 + targetCentreY;
-		canvas.drawBitmap(mTarget, center.x, center.y/2, mPaint);
-
-		// Redraw the canvas
-		invalidate();
+			center.y = (float) screenHeight / 2 + targetCentreY;
+			// Bitmap b = getResizedBitmap(mTarget, 70,70);
+			// Bitmap b = Bitmap.createScaledBitmap(mTarget, 100, 100, false);
+			canvas.drawBitmap(mTarget, center.x, (float) me.altitude, mPaint);
+			// Redraw the canvas
+			invalidate();
+		}
 	}
 
 	public void setOffset(float offset) {
@@ -121,9 +127,24 @@ public class DrawSurfaceView extends View {
 		return (result + 360.0d) % 360.0d;
 	}
 
-	public void setMyLocation(double latitude, double longitude) {
+	public void setMyLocation(double latitude, double longitude, double altitude) {
 		me.latitude = latitude;
 		me.longitude = longitude;
+		me.altitude = altitude;
 	}
 
+	
+
+	public void Draw(boolean draw) {
+		this.draw = draw;
+	}
+
+	public boolean isInCenter() {
+		System.out
+				.println("Center: " + center.x);
+		if(center.x>-10 &&center.x<20){
+			return true;
+		}
+		return false;
+	}
 }

@@ -48,6 +48,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	private Button btnSignOut, btnPlay;
 	private TextView username;
 	private ImageView profileImage;
+	private String user;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +67,12 @@ public class MainActivity extends Activity implements OnClickListener,
 	private void buttonBehavior() {
 		username = (TextView) findViewById(R.id.username);
 		profileImage = (ImageView) findViewById(R.id.profileImage);
-		
+
 		btnSignIn = (SignInButton) findViewById(R.id.sign_in_button);
 		btnSignIn.setOnClickListener(this);
-		
+
 		btnSignOut = (Button) findViewById(R.id.sign_out_button);
-		
+
 		btnSignOut.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -89,14 +90,14 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		btnPlay = (Button) findViewById(R.id.play);
 		btnPlay.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent i=new Intent(MainActivity.this,PlayActivity.class);
+				Intent i = new Intent(MainActivity.this, PlayActivity.class);
+				i.putExtra("USERNAME", user);
 				startActivity(i);
 			}
 		});
-		
 
 	}
 
@@ -138,22 +139,27 @@ public class MainActivity extends Activity implements OnClickListener,
 		getProfileInformation();
 		updateUI(true);
 		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
-		
-		//First we get the username logged in
-			//Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(this);
-			//String personName="Unknown";
-			//if(Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) { 
-			//Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-			//personName = currentPerson.getDisplayName(); }
-			
-		//Secondly, we create a location based on the user's curent location and insert the user in the database
-			//mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-			//mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-			//if (mLastLocation != null) { 
-			//Localization l = new Localization(mLastLocation.getLongitude(), mLastLocation.getLatitude());
-			//InsertDb db = new InsertDb();
-			//db.insertUser(personName, l);
-	   }
+
+		// First we get the username logged in
+		// Plus.PeopleApi.loadVisible(mGoogleApiClient,
+		// null).setResultCallback(this);
+		// String personName="Unknown";
+		// if(Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+		// Person currentPerson =
+		// Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+		// personName = currentPerson.getDisplayName(); }
+
+		// Secondly, we create a location based on the user's curent location
+		// and insert the user in the database
+		// mLastLocation =
+		// LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+		// mLastLocation =
+		// LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+		// if (mLastLocation != null) {
+		// Localization l = new Localization(mLastLocation.getLongitude(),
+		// mLastLocation.getLatitude());
+		// InsertDb db = new InsertDb();
+		// db.insertUser(personName, l);
 	}
 
 	@Override
@@ -226,6 +232,7 @@ public class MainActivity extends Activity implements OnClickListener,
 				Person currentPerson = Plus.PeopleApi
 						.getCurrentPerson(mGoogleApiClient);
 				String personName = currentPerson.getDisplayName();
+				user = personName;
 				String personPhotoUrl = currentPerson.getImage().getUrl();
 				String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 				username.setText(personName + ",\n " + email);
