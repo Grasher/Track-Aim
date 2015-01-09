@@ -36,7 +36,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	private ImageView mPointer, mSeta;
 	private Button map;
 	private RelativeLayout layout;
-	private TextView acertou, nivelText;
+	private TextView nivelText;
 
 	private SensorManager sensorManager;
 	private Sensor accelerometer;
@@ -72,7 +72,6 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	private Location currentLocation;
 	private int currentLocationIndex;
 	public boolean draw;
-	public float distanceToPoint;
 	private int nivel;
 
 	@SuppressWarnings("deprecation")
@@ -88,7 +87,6 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		magnetometer = sensorManager
 				.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 		orientation = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-		acertou = (TextView) findViewById(R.id.acertou);
 		nivelText = (TextView) findViewById(R.id.nivel);
 		mPointer = (ImageView) findViewById(R.id.pointer);
 		mSeta = (ImageView) findViewById(R.id.seta);
@@ -99,7 +97,8 @@ public class PlayActivity extends Activity implements SensorEventListener {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(PlayActivity.this, MapActivity.class);
-				i.putExtra("LOCATION", currentLocation);
+				i.putExtra("LOCATION", currentLocation.getLatitude() + ","
+						+ currentLocation.getLongitude());
 				startActivity(i);
 
 			}
@@ -126,6 +125,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		currentLocation.setLongitude(locations.get(0).getLongitude());
 		draw = false;
 		currentLocationIndex = 0;
+		nivel = 1;
 		saveProximityAlertPoint();
 		layout = (RelativeLayout) findViewById(R.id.mainlayout);
 		layout.setOnClickListener(new OnClickListener() {
@@ -133,32 +133,29 @@ public class PlayActivity extends Activity implements SensorEventListener {
 			@Override
 			public void onClick(View v) {
 				if (draw) {
-					draw = false;
 					boolean hit = mDrawView.isInCenter();
-					Toast.makeText(PlayActivity.this, "Hit" + hit,
-							Toast.LENGTH_LONG).show();
-					mSeta.setVisibility(View.GONE);
-					acertou.setVisibility(View.VISIBLE);
-					mDrawView.setVisibility(View.GONE);
-					mSeta.setVisibility(View.GONE);
-					currentLocationIndex++;
-					if (currentLocationIndex < locations.size()) {
-						nivel++;
+					if (hit) {
+						// UpdateDb.UpdateScore(username, 1);
+						draw = false;
+						mDrawView.setVisibility(View.INVISIBLE);
+						nivel = nivel + 1;
 						nivelText.setText("Nível: " + nivel);
-						currentLocation.setLatitude(locations.get(
-								currentLocationIndex).getLatitude());
-						currentLocation.setLongitude(locations.get(
-								currentLocationIndex).getLongitude());
+						currentLocationIndex++;
+						if (currentLocationIndex < locations.size()) {
+							currentLocation.setLatitude(locations.get(
+									currentLocationIndex).getLatitude());
+							currentLocation.setLongitude(locations.get(
+									currentLocationIndex).getLongitude());
 
-						saveProximityAlertPoint();
-					} else {
-						Intent i = new Intent(PlayActivity.this,
-								FinalActivity.class);
-						i.putExtra("USERNAME", username);
-						startActivity(i);
+							saveProximityAlertPoint();
+						} else {
+							Intent i = new Intent(PlayActivity.this,
+									FinalActivity.class);
+							i.putExtra("USERNAME", username);
+							startActivity(i);
+						}
 					}
 
-					// UpdateDb.UpdateScore(username, 1);
 				}
 			}
 		});
@@ -167,18 +164,18 @@ public class PlayActivity extends Activity implements SensorEventListener {
 
 	private void loadArray() {
 		locations = new ArrayList<Location>();
-		Location l4 = new Location("");
-		l4.setLatitude(41.208693);
-		l4.setLongitude(-8.596033);
-		locations.add(l4);
 		Location l1 = new Location("");
 		l1.setLatitude(41.1780816666667);
 		l1.setLongitude(-8.608971666667);
 		locations.add(l1);
 		Location l2 = new Location("");
-		l2.setLatitude(11.1780816666667);
-		l2.setLongitude(-18.608971666667);
+		l2.setLatitude(41.208625);
+		l2.setLongitude(-8.596029);
 		locations.add(l2);
+		Location l4 = new Location("");
+		l4.setLatitude(41.2086643);
+		l4.setLongitude(-8.596356);
+		locations.add(l4);
 		Location l3 = new Location("");
 		l3.setLatitude(1.1780816666667);
 		l3.setLongitude(-1.608971666667);
@@ -204,9 +201,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 				if (draw) {
 					onSensorChangeAccelerometerAndMagnetic(event);
 				} else {
-					mDrawView.setVisibility(View.GONE);
-					mSeta.setVisibility(View.GONE);
-					// acertou.setVisibility(View.GONE);
+					mDrawView.setVisibility(View.INVISIBLE);
 				}
 			}
 		}
@@ -240,7 +235,6 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		mSeta.startAnimation(ra);
 		mDrawView.Draw(true);
 		mDrawView.setOffset(targetDegree);
-		mDrawView.setSize(distanceToPoint);
 		mDrawView.setMyLocation(currentLocation.getLatitude(),
 				currentLocation.getLongitude(), y);
 
@@ -367,10 +361,8 @@ public class PlayActivity extends Activity implements SensorEventListener {
 					Toast.LENGTH_LONG).show();
 			if (distance < 10) {
 				draw = true;
-				distanceToPoint = distance;
 			} else {
 				draw = false;
-				distanceToPoint = -1;
 			}
 
 		}

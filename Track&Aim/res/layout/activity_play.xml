@@ -47,21 +47,7 @@
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/seta" 
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/acertou"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="ACERTOU!"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="60sp"
-        android:textColor="#00ff00"
-        android:textStyle="bold"
-        android:visibility="gone" />
+        android:src="@drawable/seta" />
 
     <TextView
         android:id="@+id/nivel"

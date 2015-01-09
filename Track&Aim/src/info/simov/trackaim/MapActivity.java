@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -20,19 +19,23 @@ public class MapActivity extends Activity implements LocationListener {
 	private GoogleMap googleMap;
 	double latitude;
 	double longitude;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		Intent intent = getIntent();
-		Object location = intent.getBundleExtra("LOCATION");
-
+		String tmp = intent.getStringExtra("LOCATION");
+		String[] tmpArray = tmp.split(",");
+		Location nextMarker = new Location("");
+		nextMarker.setLatitude(Float.parseFloat(tmpArray[0]));
+		nextMarker.setLongitude(Float.parseFloat(tmpArray[1]));
 		try {
 			// Loading map
 			initilizeMap();
 
 			// Changing map type
-			googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+			googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
 			// Showing / hiding your current location
 			googleMap.setMyLocationEnabled(true);
@@ -54,15 +57,15 @@ public class MapActivity extends Activity implements LocationListener {
 
 			latitude = 41.208537;
 			longitude = -8.595938;
-			
-			//Create marker based on the latitude and longitude defined
+
+			// Create marker based on the latitude and longitude defined
 			MarkerOptions marker = new MarkerOptions().position(
-					new LatLng(latitude, longitude)).title("Casa da Rita ");
+					new LatLng(nextMarker.getLatitude(), nextMarker.getLongitude())).title("Casa da Rita ");
 
 			googleMap.addMarker(marker);
-			
-			//Create other 2 random markers near the first one
-			for (int i = 0; i < 2; i++) {
+
+			// Create other 2 random markers near the first one
+			/*for (int i = 0; i < 2; i++) {
 				// random latitude and logitude
 				double[] randomLocation = createRandLocation(latitude,
 						longitude);
@@ -70,20 +73,21 @@ public class MapActivity extends Activity implements LocationListener {
 				MarkerOptions marker1 = new MarkerOptions().position(
 						new LatLng(randomLocation[0], randomLocation[1]))
 						.title("Hello Maps " + i);
-				
+
 				// changing marker color
 				if (i == 0)
 					marker1.icon(BitmapDescriptorFactory
 							.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
 				if (i == 1)
 					marker1.icon(BitmapDescriptorFactory
-							.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));	
-				
+							.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
 				googleMap.addMarker(marker1);
+				
 
-			}
+			}*/
 
-			//Set the camera position towards the first localization
+			// Set the camera position towards the first localization
 			CameraPosition cameraPosition = new CameraPosition.Builder()
 					.target(new LatLng(latitude, longitude)).zoom(15).build();
 			googleMap.animateCamera(CameraUpdateFactory
@@ -117,7 +121,7 @@ public class MapActivity extends Activity implements LocationListener {
 		super.onResume();
 		initilizeMap();
 	}
-	
+
 	/*
 	 * creating random postion around a location for testing purpose only
 	 */
@@ -130,35 +134,36 @@ public class MapActivity extends Activity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
-		
+
 		double latitude1 = location.getLatitude();
 		double longitude1 = location.getLongitude();
-		
-		Toast.makeText(getApplicationContext(), "latitude = "+latitude1+"; longitude="+longitude1+";",
-				   Toast.LENGTH_LONG).show();
-		
+
+		Toast.makeText(getApplicationContext(),
+				"latitude = " + latitude1 + "; longitude=" + longitude1 + ";",
+				Toast.LENGTH_LONG).show();
+
 		CameraPosition cameraPosition = new CameraPosition.Builder()
-		.target(new LatLng(latitude1, longitude1)).zoom(15).build();
+				.target(new LatLng(latitude1, longitude1)).zoom(15).build();
 		googleMap.animateCamera(CameraUpdateFactory
-		.newCameraPosition(cameraPosition));
-		
+				.newCameraPosition(cameraPosition));
+
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

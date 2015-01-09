@@ -429,8 +429,7 @@ containing a value of this type.
         public static final int target=0x7f020028;
     }
     public static final class id {
-        public static final int acertou=0x7f0b0022;
-        public static final int action_settings=0x7f0b0024;
+        public static final int action_settings=0x7f0b0023;
         public static final int book_now=0x7f0b000e;
         public static final int buyButton=0x7f0b000a;
         public static final int buy_now=0x7f0b000f;
@@ -448,7 +447,7 @@ containing a value of this type.
         public static final int match_parent=0x7f0b000c;
         public static final int mira=0x7f0b0020;
         public static final int monochrome=0x7f0b0013;
-        public static final int nivel=0x7f0b0023;
+        public static final int nivel=0x7f0b0022;
         public static final int none=0x7f0b0001;
         public static final int normal=0x7f0b0002;
         public static final int play=0x7f0b0019;

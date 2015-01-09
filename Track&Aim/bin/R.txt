@@ -104,8 +104,7 @@ int drawable radar 0x7f020025
 int drawable seta 0x7f020026
 int drawable taca 0x7f020027
 int drawable target 0x7f020028
-int id acertou 0x7f0b0022
-int id action_settings 0x7f0b0024
+int id action_settings 0x7f0b0023
 int id book_now 0x7f0b000e
 int id buyButton 0x7f0b000a
 int id buy_now 0x7f0b000f
@@ -123,7 +122,7 @@ int id map 0x7f0b001b
 int id match_parent 0x7f0b000c
 int id mira 0x7f0b0020
 int id monochrome 0x7f0b0013
-int id nivel 0x7f0b0023
+int id nivel 0x7f0b0022
 int id none 0x7f0b0001
 int id normal 0x7f0b0002
 int id play 0x7f0b0019

@@ -16,7 +16,7 @@ public class DrawSurfaceView extends View {
 	Paint mPaint;
 	private double OFFSET = 0d;
 	private float screenWidth, screenHeight;
-		private Bitmap mTarget;
+	private Bitmap mTarget;
 	private float size;
 	private boolean draw;
 
@@ -79,8 +79,7 @@ public class DrawSurfaceView extends View {
 																// screen
 
 			center.y = (float) screenHeight / 2 + targetCentreY;
-			Bitmap b = Bitmap.createScaledBitmap(mTarget, (int)(1000/size), (int)(1000/size), false);
-			canvas.drawBitmap(b, center.x, (float) me.altitude, mPaint);
+			canvas.drawBitmap(mTarget, center.x, (float) me.altitude, mPaint);
 			// Redraw the canvas
 			invalidate();
 		}
@@ -130,21 +129,20 @@ public class DrawSurfaceView extends View {
 		me.altitude = altitude;
 	}
 
-	
-
 	public void Draw(boolean draw) {
 		this.draw = draw;
 	}
 
 	public boolean isInCenter() {
-		System.out
-				.println("Center: " + center.x);
-		if(center.x>-10 &&center.x<20){
-			return true;
+		System.out.println("Center: " + center.x);
+		boolean hit= false;
+		if (center.x > -30 && center.x < 30) {
+			hit =true;
 		}
-		return false;
+		return hit;
 	}
-	public void setSize(float size){
+
+	public void setSize(float size) {
 		this.size = size;
 	}
 }
