@@ -201,7 +201,13 @@ public class PlayActivity extends Activity implements SensorEventListener {
 				mLastMagnetometerSet = true;
 			}
 			if (mLastAccelerometerSet && mLastMagnetometerSet) {
-				onSensorChangeAccelerometerAndMagnetic(event);
+				if (draw) {
+					onSensorChangeAccelerometerAndMagnetic(event);
+				} else {
+					mDrawView.setVisibility(View.GONE);
+					mSeta.setVisibility(View.GONE);
+					// acertou.setVisibility(View.GONE);
+				}
 			}
 		}
 	}
@@ -220,29 +226,24 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		SensorManager.getOrientation(mR, mOrientation);
 		float azimuthInRadians = mOrientation[0];
 		float azimuthInDegress = (float) (Math.toDegrees(azimuthInRadians) + 360) % 360;
-		if (draw) {
-			mDrawView.setVisibility(View.VISIBLE);
-			mSeta.setVisibility(View.VISIBLE);
-			RotateAnimation ra = new RotateAnimation(
-					normalizeDegree(targetDegree), -azimuthInDegress,
-					Animation.RELATIVE_TO_SELF, 0.5f,
-					Animation.RELATIVE_TO_SELF, 0.5f);
 
-			ra.setDuration(250);
+		mDrawView.setVisibility(View.VISIBLE);
+		mSeta.setVisibility(View.VISIBLE);
+		RotateAnimation ra = new RotateAnimation(normalizeDegree(targetDegree),
+				-azimuthInDegress, Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
 
-			ra.setFillAfter(true);
-			float y = mOrientation[1];
-			mSeta.startAnimation(ra);
-			mDrawView.Draw(true);
-			mDrawView.setOffset(targetDegree);
-			mDrawView.setSize(distanceToPoint);
-			mDrawView.setMyLocation(currentLocation.getLatitude(),
-					currentLocation.getLongitude(), y);
-		} else {
-			mDrawView.setVisibility(View.GONE);
-			mSeta.setVisibility(View.GONE);
-			// acertou.setVisibility(View.GONE);
-		}
+		ra.setDuration(250);
+
+		ra.setFillAfter(true);
+		float y = mOrientation[1];
+		mSeta.startAnimation(ra);
+		mDrawView.Draw(true);
+		mDrawView.setOffset(targetDegree);
+		mDrawView.setSize(distanceToPoint);
+		mDrawView.setMyLocation(currentLocation.getLatitude(),
+				currentLocation.getLongitude(), y);
+
 		targetDegree = bearing - (bearing + targetDegree) + azimuthInDegress;
 
 	}
