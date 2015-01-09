@@ -16,16 +16,6 @@
         android:layout_marginTop="191dp" >
     </com.google.android.gms.common.SignInButton>
 
-    <ImageView
-        android:id="@+id/profileImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/common_full_open_on_phone"
-        android:visibility="gone" />
-
     <TextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
@@ -67,5 +57,14 @@
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignBottom="@+id/sign_in_button"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/common_full_open_on_phone" 
+        android:visibility="gone"/>
 
 </RelativeLayout>

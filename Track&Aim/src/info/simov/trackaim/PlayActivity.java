@@ -25,6 +25,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class PlayActivity extends Activity implements SensorEventListener {
@@ -35,6 +36,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	private ImageView mPointer, mSeta;
 	private Button map;
 	private RelativeLayout layout;
+	private TextView acertou, nivelText;
 
 	private SensorManager sensorManager;
 	private Sensor accelerometer;
@@ -48,7 +50,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 	private float[] mR = new float[9];
 	private float[] mOrientation = new float[3];
 
-	private ArrayList<LocationManager> locationManager;
+	private LocationManager locationManager;
 
 	private static final String PROX_ALERT_INTENT = "com.example.sensorgps.lbs.ProximityAlert";
 
@@ -64,9 +66,14 @@ public class PlayActivity extends Activity implements SensorEventListener {
 																	// Milliseconds
 
 	private float bearing;
+	private String username;
 	private info.simov.trackaim.DrawSurfaceView mDrawView;
 	private ArrayList<Location> locations;
-	public boolean draw[];
+	private Location currentLocation;
+	private int currentLocationIndex;
+	public boolean draw;
+	public float distanceToPoint;
+	private int nivel;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -74,15 +81,15 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
 		Intent i = getIntent();
-		String username = i.getStringExtra("USERNAME");
-
+		username = i.getStringExtra("USERNAME");
 		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		accelerometer = sensorManager
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		magnetometer = sensorManager
 				.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 		orientation = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-
+		acertou = (TextView) findViewById(R.id.acertou);
+		nivelText = (TextView) findViewById(R.id.nivel);
 		mPointer = (ImageView) findViewById(R.id.pointer);
 		mSeta = (ImageView) findViewById(R.id.seta);
 		map = (Button) findViewById(R.id.map);
@@ -92,6 +99,7 @@ public class PlayActivity extends Activity implements SensorEventListener {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(PlayActivity.this, MapActivity.class);
+				i.putExtra("LOCATION", currentLocation);
 				startActivity(i);
 
 			}
@@ -99,23 +107,9 @@ public class PlayActivity extends Activity implements SensorEventListener {
 
 		mDrawView = (DrawSurfaceView) findViewById(R.id.drawSurfaceView);
 
-		LocationManager loc1 = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		loc1.requestLocationUpdates(
-
-		LocationManager.GPS_PROVIDER,
-
-		MINIMUM_TIME_BETWEEN_UPDATE,
-
-		MINIMUM_DISTANCECHANGE_FOR_UPDATE,
-
-		new MyLocationListener()
-
-		);
-		locationManager = new ArrayList<LocationManager>();
-		LocationManager loc2 = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-		loc2.requestLocationUpdates(
+		locationManager.requestLocationUpdates(
 
 		LocationManager.GPS_PROVIDER,
 
@@ -126,54 +120,69 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		new MyLocationListener()
 
 		);
-		LocationManager loc3 = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-		loc3.requestLocationUpdates(
-
-		LocationManager.GPS_PROVIDER,
-
-		MINIMUM_TIME_BETWEEN_UPDATE,
-
-		MINIMUM_DISTANCECHANGE_FOR_UPDATE,
-
-		new MyLocationListener()
-
-		);
-		locationManager.add(loc1);
-		locationManager.add(loc2);
-		locationManager.add(loc3);
-		locations = new ArrayList<Location>();
-		draw = new boolean[3];
-		Location l = new Location("");
-		l.setLatitude(41.1780816666667);
-		l.setLongitude(-8.608971666667);
-		saveProximityAlertPoint((float) l.getLatitude(),
-				(float) l.getLongitude(),0);
-		locations.add(l);
-		draw[0] = false;
-		l.setLatitude(11.1780816666667);
-		l.setLongitude(-18.608971666667);
-		saveProximityAlertPoint((float) l.getLatitude(),
-				(float) l.getLongitude(),1);
-		locations.add(l);
-		draw[1] = false;
-		l.setLatitude(1.1780816666667);
-		l.setLongitude(-1.608971666667);
-		saveProximityAlertPoint((float) l.getLatitude(),
-				(float) l.getLongitude(),2);
-		locations.add(l);
-		draw[2] = false;
+		loadArray();
+		currentLocation = new Location("");
+		currentLocation.setLatitude(locations.get(0).getLatitude());
+		currentLocation.setLongitude(locations.get(0).getLongitude());
+		draw = false;
+		currentLocationIndex = 0;
+		saveProximityAlertPoint();
 		layout = (RelativeLayout) findViewById(R.id.mainlayout);
 		layout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				boolean hit = mDrawView.isInCenter();
-				Toast.makeText(PlayActivity.this, "Hit" + hit,
-						Toast.LENGTH_LONG).show();
-				// UpdateDb.UpdateScore(username, 1);
+				if (draw) {
+					draw = false;
+					boolean hit = mDrawView.isInCenter();
+					Toast.makeText(PlayActivity.this, "Hit" + hit,
+							Toast.LENGTH_LONG).show();
+					mSeta.setVisibility(View.GONE);
+					acertou.setVisibility(View.VISIBLE);
+					mDrawView.setVisibility(View.GONE);
+					mSeta.setVisibility(View.GONE);
+					currentLocationIndex++;
+					if (currentLocationIndex < locations.size()) {
+						nivel++;
+						nivelText.setText("Nível: " + nivel);
+						currentLocation.setLatitude(locations.get(
+								currentLocationIndex).getLatitude());
+						currentLocation.setLongitude(locations.get(
+								currentLocationIndex).getLongitude());
+
+						saveProximityAlertPoint();
+					} else {
+						Intent i = new Intent(PlayActivity.this,
+								FinalActivity.class);
+						i.putExtra("USERNAME", username);
+						startActivity(i);
+					}
+
+					// UpdateDb.UpdateScore(username, 1);
+				}
 			}
 		});
+
+	}
+
+	private void loadArray() {
+		locations = new ArrayList<Location>();
+		Location l4 = new Location("");
+		l4.setLatitude(41.208693);
+		l4.setLongitude(-8.596033);
+		locations.add(l4);
+		Location l1 = new Location("");
+		l1.setLatitude(41.1780816666667);
+		l1.setLongitude(-8.608971666667);
+		locations.add(l1);
+		Location l2 = new Location("");
+		l2.setLatitude(11.1780816666667);
+		l2.setLongitude(-18.608971666667);
+		locations.add(l2);
+		Location l3 = new Location("");
+		l3.setLatitude(1.1780816666667);
+		l3.setLongitude(-1.608971666667);
+		locations.add(l3);
 
 	}
 
@@ -211,26 +220,31 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		SensorManager.getOrientation(mR, mOrientation);
 		float azimuthInRadians = mOrientation[0];
 		float azimuthInDegress = (float) (Math.toDegrees(azimuthInRadians) + 360) % 360;
-		for (int i = 0; i < draw.length; i++) {
-			if (draw[i]) {
-				RotateAnimation ra = new RotateAnimation(normalizeDegree(targetDegree),
-						-azimuthInDegress, Animation.RELATIVE_TO_SELF, 0.5f,
-						Animation.RELATIVE_TO_SELF, 0.5f);
+		if (draw) {
+			mDrawView.setVisibility(View.VISIBLE);
+			mSeta.setVisibility(View.VISIBLE);
+			RotateAnimation ra = new RotateAnimation(
+					normalizeDegree(targetDegree), -azimuthInDegress,
+					Animation.RELATIVE_TO_SELF, 0.5f,
+					Animation.RELATIVE_TO_SELF, 0.5f);
 
-				ra.setDuration(250);
+			ra.setDuration(250);
 
-				ra.setFillAfter(true);
-				float y = mOrientation[1];
-				mSeta.startAnimation(ra);
-				mDrawView.Draw(true);
-				mDrawView.setOffset(targetDegree);
-				mDrawView.setMyLocation(locations.get(i).getLatitude(),
-						locations.get(i).getLongitude(), y);
-				targetDegree = bearing - (bearing + targetDegree) + azimuthInDegress;
-			}
+			ra.setFillAfter(true);
+			float y = mOrientation[1];
+			mSeta.startAnimation(ra);
+			mDrawView.Draw(true);
+			mDrawView.setOffset(targetDegree);
+			mDrawView.setSize(distanceToPoint);
+			mDrawView.setMyLocation(currentLocation.getLatitude(),
+					currentLocation.getLongitude(), y);
+		} else {
+			mDrawView.setVisibility(View.GONE);
+			mSeta.setVisibility(View.GONE);
+			// acertou.setVisibility(View.GONE);
 		}
+		targetDegree = bearing - (bearing + targetDegree) + azimuthInDegress;
 
-		
 	}
 
 	private void onSensorChangeOrientation(SensorEvent event) {
@@ -276,18 +290,20 @@ public class PlayActivity extends Activity implements SensorEventListener {
 		sensorManager.unregisterListener(this, orientation);
 	}
 
-	private void saveProximityAlertPoint(float latitude, float longitude, int i) {
+	private void saveProximityAlertPoint() {
 
-		saveCoordinatesInPreferences((float) latitude, (float) longitude);
-		addProximityAlert((float) latitude, (float) longitude,i);
+		saveCoordinatesInPreferences((float) currentLocation.getLatitude(),
+				(float) currentLocation.getLongitude());
+		addProximityAlert((float) currentLocation.getLatitude(),
+				(float) currentLocation.getLongitude());
 
 	}
 
-	private void addProximityAlert(double latitude, double longitude ,int i) {
+	private void addProximityAlert(double latitude, double longitude) {
 		Intent intent = new Intent(PROX_ALERT_INTENT);
 		PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 0,
 				intent, 0);
-		locationManager.get(i).addProximityAlert(latitude, // the latitude of the
+		locationManager.addProximityAlert(latitude, // the latitude of the
 													// central point of the
 													// alert region
 				longitude, // the longitude of the central point of the alert
@@ -346,22 +362,14 @@ public class PlayActivity extends Activity implements SensorEventListener {
 
 			targetDegree += geoField.getDeclination();
 
-			for (int i = 0; i < locations.size(); i++) {
-				if (locations.get(i).getLatitude() == pointLocation
-						.getLatitude()
-						&& locations.get(i).getLongitude() == pointLocation
-								.getLongitude()) {
-					Toast.makeText(PlayActivity.this, "distance: " + distance,
-							Toast.LENGTH_LONG).show();
-					if (distance < 10) {
-						draw[i] = true;
-						// distanceToPoint = distance;
-					} else {
-						draw[i] = false;
-						// distanceToPoint = -1;
-					}
-
-				}
+			Toast.makeText(PlayActivity.this, "distance: " + distance,
+					Toast.LENGTH_LONG).show();
+			if (distance < 10) {
+				draw = true;
+				distanceToPoint = distance;
+			} else {
+				draw = false;
+				distanceToPoint = -1;
 			}
 
 		}

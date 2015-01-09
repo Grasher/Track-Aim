@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -17,9 +16,8 @@ public class DrawSurfaceView extends View {
 	Paint mPaint;
 	private double OFFSET = 0d;
 	private float screenWidth, screenHeight;
-	private Drawable d;
-	private Bitmap mTarget;
-	private float altitude;
+		private Bitmap mTarget;
+	private float size;
 	private boolean draw;
 
 	public DrawSurfaceView(Context c, Paint paint) {
@@ -81,9 +79,8 @@ public class DrawSurfaceView extends View {
 																// screen
 
 			center.y = (float) screenHeight / 2 + targetCentreY;
-			// Bitmap b = getResizedBitmap(mTarget, 70,70);
-			// Bitmap b = Bitmap.createScaledBitmap(mTarget, 100, 100, false);
-			canvas.drawBitmap(mTarget, center.x, (float) me.altitude, mPaint);
+			Bitmap b = Bitmap.createScaledBitmap(mTarget, (int)(1000/size), (int)(1000/size), false);
+			canvas.drawBitmap(b, center.x, (float) me.altitude, mPaint);
 			// Redraw the canvas
 			invalidate();
 		}
@@ -146,5 +143,8 @@ public class DrawSurfaceView extends View {
 			return true;
 		}
 		return false;
+	}
+	public void setSize(float size){
+		this.size = size;
 	}
 }

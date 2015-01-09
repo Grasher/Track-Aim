@@ -81,6 +81,10 @@
             android:name=".PlayExActivity"
             android:label="@string/title_activity_play_ex" >
         </activity>
+        <activity
+            android:name=".FinalActivity"
+            android:label="@string/title_activity_final" >
+        </activity>
     </application>
 
 </manifest>

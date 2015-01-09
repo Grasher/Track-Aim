@@ -139,7 +139,6 @@ public class MainActivity extends Activity implements OnClickListener,
 		mSignInClicked = false;
 		getProfileInformation();
 		updateUI(true);
-		Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 
 		InsertDb db = new InsertDb();
 		try {
