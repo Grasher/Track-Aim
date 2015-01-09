@@ -1,6 +1,7 @@
 package info.simov.trackaim;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ public class MapActivity extends Activity implements LocationListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
+		Intent intent = getIntent();
+		Object location = intent.getBundleExtra("LOCATION");
 
 		try {
 			// Loading map
